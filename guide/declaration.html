@@ -1,0 +1,82 @@
+<html>
+    <head>
+        <title> Tabitha Programming Guide - Declarations </title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div id="title-div"> 
+            <h1> Tabitha Programming Guide </h1>
+        </div>
+<div id="sidebar">
+<a href="introduction.html"> <div class="navbutton">Introduction</div> </a><br>
+<a href="getting_started.html"> <div class="navbutton">Getting Started</div> </a><br>
+<a href="type_system.html"> <div class="navbutton">Type System</div> </a><br>
+<a href="contexts.html"> <div class="navbutton">Contexts</div> </a><br>
+<a href="declaration.html"> <div class="navbutton">Declarations</div> </a><br>
+<a href="functions.html"> <div class="navbutton">Functions</div> </a><br>
+<a href="addresses.html"> <div class="navbutton">Addresses</div> </a><br>
+<a href="vectors.html"> <div class="navbutton">Vectors</div> </a><br>
+<a href="tables.html"> <div class="navbutton">Tables</div> </a><br>
+</div>
+<div id="content">
+<h1 id="variable-declaraton">Variable Declaraton</h1>
+<h2 id="introduction">Introduction</h2>
+<p>A <strong>variable declaration</strong> is a statement which describes a variable to be used in some scope. In Tabitha, there are three main kinds of variable declaration:</p>
+<ul>
+<li>Stacked Variable Declaration</li>
+<li>Heaped Variable Declaratoin</li>
+<li>Context/Dump Variable Declaration</li>
+</ul>
+<p>The main difference between each type of declaration is scope. Stacked variables should only be used within the current <em>block</em>. Heaped variables can be used by any part of the code which has the address of the variable.<br />
+Context variables should only be used within functions which have captured the relevant contexts.</p>
+<h2 id="stacked-declaration">Stacked Declaration</h2>
+<p>The most straight-forward kind of variable declaration in Tabitha is the <strong>stacked variable declaration</strong>.</p>
+<pre><code>function foo {
+    Int x                   # this is a stacked variable declaration
+    stacked Float y = 3.14  # this is also a stacked variable declaration 
+}</code></pre>
+<p>To declare a stacked variable, we need to be inside a function. By default, all variables declared inside a function are stacked, but we can choose to be explicit and use the <code>stacked</code> keyword. It is optional whether or not we specify an initial value for the variable. The <strong>stack</strong> is a piece of memory given to your program by the operating system, and is essentially a linear space in memory. The stack can be pushed to and popped from. The stack is reset upon returning from a function, hence the restricton that stacked variables should really only be used within the block in which they are declared.</p>
+<h2 id="heaped-declaration">Heaped Declaration</h2>
+<p>Heaped declarations also take place within functions, but there is a difference in the syntax.</p>
+<pre><code>function foo {
+    heaped Int x   = 10  # this is a heaped variable declaration  
+    heaped Float y = 10  # this is also a heaped variable declaration  
+}</code></pre>
+<p>A heaped variable can be used <em>by name</em> within the block in which it is declared. They can also be used however by any part of the code which has the variable’s address. Here is an example:</p>
+<pre><code>attach external std 
+
+function foo {
+    Addr[Int] x = bar() 
+    std::printIntLn(@x)        
+}
+
+function bar -&gt; Addr[Int] {
+    heaped Int x = 10 
+    return x? 
+}</code></pre>
+<p>The result of compiling and running this program would be that <code>10</code> is printed to the console. This example is <strong>not</strong> guaranteed to work if we had made <code>x</code> a <code>stacked</code> variable in <code>bar</code>. The reason for this, is that heaped variables are allocated on the memory <strong>heap</strong>. This is a large chunk of memory provided to the program by the operating system. It is less organised than the stack, and is not affected by a function returning. Data allocated on the heap persists until it is explicitly deallocated. Therefore, so long as we have the memory address, we can access and modify the data.</p>
+<p>Memory can be deallocated (or freed) by an <code>unheap</code> statement. Since many complex datatypes can find themselves <em>heaped</em>, the unheap statement takes a mandatory argument describing the type of data which is to be deallocated. For example,</p>
+<pre><code>heaped Int x
+# ... 
+unheap x? as Int
+
+heaped Vec[Int, 10] x
+# ...
+unheap x? as Vec[Int, 10]</code></pre>
+<p>So we we that unheap statements take an address to some heaped data, and the type of that heaped data. We have to use addresses here, for the name of the variable may no longer be in scope.</p>
+<h2 id="contextdump-declaration">Context/Dump Declaration</h2>
+<p>Although the usage of these variables differ from eachother, the mechanics of declaring context variables and dump variables are very similar. Declaring a variable inside a context or a dump is very simple.</p>
+<pre><code>context Data {
+    Int x
+    Float y
+    std::String msg = &quot;hello&quot;
+    Vec[Int, 10] scores
+}
+
+dump Const {
+    Float pi = 3.14  
+}</code></pre>
+<p>Context and dump variables primarily reside in the data section of the program’s binary. That means that the variables are effectively a part of the program itself, and are not just created by the code during runtime. The exception to this, is what happens with vectors and tables. The elements of these are actually stored on the heap, but the handles are in the data section.</p>
+</div>
+    </body>
+</html>

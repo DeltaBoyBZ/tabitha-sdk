@@ -1,0 +1,63 @@
+<html>
+    <head>
+        <title> Tabitha Programming Guide - Addresses </title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div id="title-div"> 
+            <h1> Tabitha Programming Guide </h1>
+        </div>
+<div id="sidebar">
+<a href="introduction.html"> <div class="navbutton">Introduction</div> </a><br>
+<a href="getting_started.html"> <div class="navbutton">Getting Started</div> </a><br>
+<a href="type_system.html"> <div class="navbutton">Type System</div> </a><br>
+<a href="contexts.html"> <div class="navbutton">Contexts</div> </a><br>
+<a href="declaration.html"> <div class="navbutton">Declarations</div> </a><br>
+<a href="functions.html"> <div class="navbutton">Functions</div> </a><br>
+<a href="addresses.html"> <div class="navbutton">Addresses</div> </a><br>
+<a href="vectors.html"> <div class="navbutton">Vectors</div> </a><br>
+<a href="tables.html"> <div class="navbutton">Tables</div> </a><br>
+</div>
+<div id="content">
+<h1 id="addresses">Addresses</h1>
+<h2 id="introduction">Introduction</h2>
+<p>In Tabitha, an address is what a C programmer might call a <em>pointer</em>. It is a value which identifies a location in memory where data is stored. Addresses are very useful for developing performant applications.</p>
+<h2 id="declaring-an-address">Declaring an Address</h2>
+<p>Since they have their own types, addresses can be declared just like any other variable.</p>
+<pre><code>Addr[Int] x
+stacked Addr[Int] y
+heaped Addr[Int] z</code></pre>
+<p>The type <code>Addr[Int]</code> is one which belongs to variables representing the memory address of some integer. Similarly, <code>Addr[Float]</code> is for the address of a <code>Float</code>. We can create addresses for any type, including other addresses.</p>
+<pre><code>Addr[Addr[Int]] x</code></pre>
+<p>Here, <code>x</code> would hold the memory address to data which corresponds to another memory address.</p>
+<h2 id="getting-an-addresss">Getting an Addresss</h2>
+<p>Given a variable or subvalue thereof, we can get its address in memory using the <strong>locate</strong> operator <code>?</code>.</p>
+<pre><code>Int x = 10
+Addr[Int] x_addr = x? </code></pre>
+<p>The variable <code>x_addr</code> should not hold the memory address of the variable <code>x</code>. We can do this with any referencable value in Tabitha. For example, we can do it with vector elements:</p>
+<pre><code>Vec[Int, 10] x
+Addr[Int] elem_ptr = x[3]?</code></pre>
+<p>The variable <code>elem_ptr</code> holds the memory address where we find the element of index <code>3</code> of vector <code>x</code>. This also works with members of collection types.</p>
+<pre><code>collection type Point {
+    Float x
+    Float y
+}
+
+function foo {
+    Point p 
+    p.x = 10
+    Addr[Float] px_ptr = p.x? 
+}</code></pre>
+<p>The variable <code>px_ptr</code> holds the memory address where we can find the value <code>p.x</code>, which happens to be <code>10</code>.</p>
+<h2 id="querying-an-address">Querying an Address</h2>
+<p>Given some address, we can get the value found at that address using the <strong>query operator</strong> <code>@</code>.</p>
+<pre><code>Int a = 10
+Int b = 20
+Addr[Int] a_ptr = a?
+Addr[Int] b_ptr = b?
+Int c = @a_ptr + @b_ptr</code></pre>
+<p>Here, we have taken some extra steps in summing two variables, for the sake of demonstration. We have two variables <code>a</code> and <code>b</code>. We get their memory addresses and store them in <code>a_ptr</code> and <code>b_ptr</code> respectively. We then create a new variable <code>c</code> and assign to it the sum of the integer values found at <code>a_ptr</code> and <code>b_ptr</code>. Now <code>c</code> should have the value <code>30</code>.</p>
+<p>It should be noted that, as of yet, Tabitha does <strong>not</strong> support address arithmetic. That is, it does not allow one to add addresses together, or at numbers to addresses. This may be changed in the future.</p>
+</div>
+    </body>
+</html>

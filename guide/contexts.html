@@ -1,0 +1,74 @@
+<html>
+    <head>
+        <title> Tabitha Programming Guide - Contexts </title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div id="title-div"> 
+            <h1> Tabitha Programming Guide </h1>
+        </div>
+<div id="sidebar">
+<a href="introduction.html"> <div class="navbutton">Introduction</div> </a><br>
+<a href="getting_started.html"> <div class="navbutton">Getting Started</div> </a><br>
+<a href="type_system.html"> <div class="navbutton">Type System</div> </a><br>
+<a href="contexts.html"> <div class="navbutton">Contexts</div> </a><br>
+<a href="declaration.html"> <div class="navbutton">Declarations</div> </a><br>
+<a href="functions.html"> <div class="navbutton">Functions</div> </a><br>
+<a href="addresses.html"> <div class="navbutton">Addresses</div> </a><br>
+<a href="vectors.html"> <div class="navbutton">Vectors</div> </a><br>
+<a href="tables.html"> <div class="navbutton">Tables</div> </a><br>
+</div>
+<div id="content">
+<h1 id="contexts-and-dumps">Contexts and Dumps</h1>
+<h2 id="introduction">Introduction</h2>
+<p>Along with the table type, contexts are a flagship feature of Tabitha. It is through contexts, that Tabitha seeks to make the use of global data tenable in a large program. The basic idea, is that global data is store in contexts, and any function that wishes to use this data must capture the context. This way, any bugs relating to a specific piece of data can be easily tracked down to a subset of all functions in the source code.</p>
+<p>Contexts also remove the need for creating types which are only used once (think context types from C). Furthermore, this global data need not be passed around awkwardly from one procedure to another, but rather any procedure that needs the data can have it. While this level of global data access is often seen as an issue, it is circumvented by the requirement that functions must explicitly show that they can access this data via the capturing syntax.</p>
+<p>A <strong>dump</strong> is similar to a context, except there are not as many restrictions as to where its members can be used. These are envisioned to be convenient stores for constants, especially when writing API bindings.</p>
+<h2 id="creating-a-context">Creating a Context</h2>
+<p>Here is an example of a context:</p>
+<pre><code>context Data {
+    Int x
+    Float y
+    std::String msg
+}</code></pre>
+<p>All a context is, is a static collection of data. There is only one copy of this dataset in the entire program; contexts cannot be instanced.</p>
+<h2 id="capturing-and-using-a-context">Capturing and Using a Context</h2>
+<p>For a function to read or modify data in a context, it must first capture said context. Here is an example:</p>
+<pre><code>function foo &lt;Data&gt; {
+        Data/x = 69
+        Data/msg = &quot;Hello there&quot;
+        std::printFloatLn(Data/y)
+}</code></pre>
+<p>A function may capture as many contexts as it pleases. Contexts are referenced by their name, and if they belong to an attached slab, then the slab name is a prefix. For example, <code>bar::Data</code> would refer to the context <code>Data</code> in slab <code>bar</code>.</p>
+<p>The members of a constext are referenced by a forward slash <code>/</code>. Members can be referenced for the sake of reading or writing.</p>
+<h2 id="creating-and-using-dumps">Creating and Using Dumps</h2>
+<p>The syntax for definingg dumps is very similar to that of defining a context.</p>
+<pre><code>dump Const { 
+    Int x = 69 
+    Float y = 3.14
+    std::String msg = &quot;hello there&quot; 
+} </code></pre>
+<p>Functions need not capture a dump in order to utilise it. So for example,</p>
+<pre><code>function foo {
+    std::printIntLn(Const/x)
+}</code></pre>
+<p>is perfectly legal.</p>
+<h2 id="getting-around-the-rules">Getting Around the Rules</h2>
+<p>It is technically possible to use the members of a context without capturing the context. The means by which we do this is a little convoluted, and shall be considered bad practice. The compiler won’t stop you, but Tabitha will be very upset with you personally. Here is an example, just so you <strong>don’t</strong> do this:</p>
+<pre><code>context Data {
+    Int x = 0 
+}
+
+function foo &lt;Data&gt; {
+    std::printIntLn(Data/x)
+    foo(Data/x?)
+    std::printIntLn(Data/x)
+}
+
+function bar(Addr[Int] x) {
+    @x = @x + 1 
+}</code></pre>
+<p>Although <code>bar</code> has not captured the context <code>Data</code>, it may modify <code>Data/x</code>, for it has its address. It is necessary to keep this mechanism for e.g. to be able to pass these addresses to external API functions. Within Tabitha itself however, it is advised that we keep this mode of usage to a minimum.</p>
+</div>
+    </body>
+</html>

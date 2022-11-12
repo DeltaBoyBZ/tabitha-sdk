@@ -1,0 +1,97 @@
+<html>
+    <head>
+        <title> Tabitha Programming Guide - Vectors </title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div id="title-div"> 
+            <h1> Tabitha Programming Guide </h1>
+        </div>
+<div id="sidebar">
+<a href="introduction.html"> <div class="navbutton">Introduction</div> </a><br>
+<a href="getting_started.html"> <div class="navbutton">Getting Started</div> </a><br>
+<a href="type_system.html"> <div class="navbutton">Type System</div> </a><br>
+<a href="contexts.html"> <div class="navbutton">Contexts</div> </a><br>
+<a href="declaration.html"> <div class="navbutton">Declarations</div> </a><br>
+<a href="functions.html"> <div class="navbutton">Functions</div> </a><br>
+<a href="addresses.html"> <div class="navbutton">Addresses</div> </a><br>
+<a href="vectors.html"> <div class="navbutton">Vectors</div> </a><br>
+<a href="tables.html"> <div class="navbutton">Tables</div> </a><br>
+</div>
+<div id="content">
+<h1 id="vectors">Vectors</h1>
+<h2 id="declaring-a-vector">Declaring a Vector</h2>
+<p>A vector is declared just like any other variable. For example,</p>
+<pre><code>Vec[Int, 10] x 
+stacked Vec[Int, 10] y
+heaped Vec[Int, 10] z </code></pre>
+<p>will declare a vector of integers <code>10</code> elements long. The vector itself is formally an pointer as far as the compiler is concerned. This pointer we refer to as the <strong>handle</strong> to the vector, leading us to the location in memory where the elements are stored.</p>
+<p>If a vector is declared as <code>heaped</code>, then not only is the handle stored on the heap, but so are the elements. By default however, like all variables, the handle and elements are stored on the stack.</p>
+<h2 id="dealing-with-the-elements.">Dealing With the Elements.</h2>
+<p>Elements of a vector are referenced by their index in the vector.<br />
+For example,</p>
+<pre><code>Vec[Int, 10] x
+x[3] = 10 </code></pre>
+<p>will set element <code>3</code> of vector <code>x</code> to <code>10</code>. The <em>first</em> element of the vector is indexed by <code>x[0]</code>. We can use any expression to index a vector element, so long as that expression is of integer type. Because the value of this expression can thus only be determined at runtime, the compiler does check whether or not the reference is in bounds (complying with the vector’s length). Hence it is possible to cause a <em>segmentation fault</em> at runtime; a program may query memory which has not been allocated. This is an issue with which C programmers are very familiar, however can come as a shock to programmers coming from other languages which do runtime checks. These checks are skipped over for the sake of performance. It is incumbent on the developer to place this checks in their code, if they desire the extra safety.</p>
+<h2 id="setting-multiple-elements">Setting Multiple Elements</h2>
+<p>Assigning to multiple elements individually by their index can be very tedious. Tabitha hence has a syntactic sugar for this.</p>
+<pre><code>Vec[Int, 10] x
+set vector x from 3 as (23, -5, 11)</code></pre>
+<p>The <code>set vector</code> statement sets as many elements of the vector, as their are expressions in the comma-separated tuple <code>(23, -5, 11)</code>. This assignment starts <code>from</code> the element with index <code>3</code>. Once again, their are no compile-time or runtime checks as to whether we are remaining within the vector bounds.</p>
+<h2 id="fuzzy-vectors">Fuzzy Vectors</h2>
+<p>Sometimes we don’t know in-advance what the length of our vector is going to be. The type system accounts for this, by having a special type of vector called a <strong>fuzzy vector</strong>. A fuzzy vector is simply a vector with no specified length. They are declared with a null argument for a length with the usual <code>Vec</code> functor. For example,</p>
+<pre><code>Vec[Int, _] x</code></pre>
+<p>will declare a fuzzy vector of integers. To attach this vector to memory, we use the <code>label</code> statement. For example, we can write something like,</p>
+<pre><code>Vec[Int, 10] x # just a normal vector
+Vec[Int,  _] y # a fuzzy vector
+label x[0]? as y </code></pre>
+<p>which make it so the fuzzy vector <code>y</code> represents the data held in <code>x</code>.</p>
+<p>I envision that fuzzy vectors will be used most as the arguments to functions which want to take any number of values of a particular type. Take this example:</p>
+<pre><code>attach external std
+
+function sum (Vec[Int, _] x, Int numTerms) -&gt; Int {
+    Int s = 0
+    Int n = 0
+    loop {
+        s = s + x[n]
+        n = n + 1
+    } while n &lt; numTerms
+    return s
+}
+
+function main -&gt; Int {
+    Vec[Int, 5] x 
+    set vector x from 0 as (1, 2, 3, 4, 5) 
+    Vec[Int, _] y
+    label x[0]? as y
+    Int s = sum(y, 5)
+    std::printIntLn(s)
+    return 0
+}</code></pre>
+<p>We pass a fuzzy vector to the <code>sum</code> function, letting the function know how many elements are in the vector. Note that we could also do it like this:</p>
+<pre><code>attach external std
+
+function sum (Addr[Int] x, Int numTerms) -&gt; Int {
+    Vec[Int, _] y
+    label x as y 
+    Int s = 0
+    Int n = 0
+    loop {
+        s = s + y[n]
+        n = n + 1
+    } while n &lt; numTerms
+    return s
+}
+
+function main -&gt; Int {
+    Vec[Int, 5] x 
+    set vector x from 0 as (1, 2, 3, 4, 5) 
+    Int s = sum(x[0]?, 5)
+    std::printIntLn(s)
+    return 0
+}</code></pre>
+<p>We pass an address to the function, and the function interprets it as an address the the first element of the vector.</p>
+<p>Unlike in C, addresses do not enjoy a dual existence as simple pointers, and handles for arrays. In order to reference elements of an array encoded by and address, the variable must be of vector type. We cannot use the index notation on an address. Really, fuzzy vectors are there to allow us to treat addresses as vectors, though with an extra step.</p>
+</div>
+    </body>
+</html>

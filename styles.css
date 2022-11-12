@@ -1,0 +1,100 @@
+@keyframes fade-in
+{
+    0% {
+        opacity: 0%;
+    }
+    100% {
+        opacity: 100%;
+    }
+}
+
+body {
+    background-color: gray;
+}
+
+#master-div
+{
+    position: relative;
+    top: 10vh; 
+}
+
+#logo-div {
+    position: relative; 
+    left: 20vw; 
+    width: 60vw;
+    height: 30vw;
+    /*background-color: blue;*/
+}
+
+#logo-without-tabitha {
+    position: absolute;
+    width: 60vw;
+    animation: fade-in;
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+
+#logo-with-tabitha {
+    position: absolute; 
+    width: 60vw;
+    animation: fade-in; 
+    animation-duration: 1s;
+    animation-delay: 1s; 
+    animation-fill-mode: both;
+}
+
+#desc-div {
+    height: 5vh;
+    position: relative; 
+    left: 10vw; 
+    width: 80vw;
+    font-size: 3vh; 
+    text-align: center;
+    font-weight: bold; 
+    animation: fade-in; 
+    animation-delay: 2s; 
+    animation-duration: 1s; 
+    animation-fill-mode: both; 
+}
+
+
+#button-row-div {
+    position: relative;  
+}
+
+#repo-button {
+    position: absolute; 
+    top: 5vh;
+    left: 10vw; 
+    width: 30vw; 
+    animation: fade-in; 
+    animation-delay: 3s; 
+    animation-duration: 1s; 
+    animation-fill-mode: both; 
+}
+
+#learn-more-button {
+    position: absolute; 
+    top: 5vh;
+    right: 10vw;
+    width: 30vw;
+    animation: fade-in; 
+    animation-delay: 4s; 
+    animation-duration: 1s; 
+    animation-fill-mode: both; 
+}
+
+.landing-button {
+    background-color: blue; 
+    color: white; 
+    text-align: center;
+    padding: 3vh; 
+    font-size: 3vh; 
+    font-weight: bold; 
+}
+
+.landing-button:hover {
+    background-color: lightblue; 
+    color: black; 
+}
+

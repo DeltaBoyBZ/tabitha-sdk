@@ -1,0 +1,50 @@
+<html>
+    <head>
+        <title> Tabitha Programming Guide - Getting Started </title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div id="title-div"> 
+            <h1> Tabitha Programming Guide </h1>
+        </div>
+<div id="sidebar">
+<a href="introduction.html"> <div class="navbutton">Introduction</div> </a><br>
+<a href="getting_started.html"> <div class="navbutton">Getting Started</div> </a><br>
+<a href="type_system.html"> <div class="navbutton">Type System</div> </a><br>
+<a href="contexts.html"> <div class="navbutton">Contexts</div> </a><br>
+<a href="declaration.html"> <div class="navbutton">Declarations</div> </a><br>
+<a href="functions.html"> <div class="navbutton">Functions</div> </a><br>
+<a href="addresses.html"> <div class="navbutton">Addresses</div> </a><br>
+<a href="vectors.html"> <div class="navbutton">Vectors</div> </a><br>
+<a href="tables.html"> <div class="navbutton">Tables</div> </a><br>
+</div>
+<div id="content">
+<h1 id="getting-started">Getting Started</h1>
+<h2 id="downloading-the-sdk">Downloading the SDK</h2>
+<h2 id="setting-up-the-development-environment">Setting Up the Development Environment</h2>
+<h2 id="writing-your-first-program">Writing your First Program</h2>
+<p>It is traditional for the first application written in any language to be one which simplye prints, <em>“Hello World!”</em> to the console. We see no reason the break this tradition. Create a file <code>hello.tabi</code>, in a new folder <code>tabi-hello</code> (call these anything you like but these are the names we are using in the text):</p>
+<pre><code>attach external std
+
+function main -&gt; Int {
+    std::printLn(&quot;Hello World!&quot;)
+    return 0 
+}</code></pre>
+<p>This program can be compiled with the command:</p>
+<pre><code>$ tabic hello.tabi -o bc </code></pre>
+<p>The folder <code>tabi-hello</code> should now look something like this:</p>
+<pre><code>tabi-hello
+|-- bc
+|-- |-- EXTERNAL_std.bc
+|-- |-- EXTERNAL_std.o
+|-- |-- LOCAL_hello.bc
+|-- |-- LOCAL_hello.o
+|-- hello
+|-- hello.tabi</code></pre>
+<p>We of course have our original source file <code>hello.tabi</code>, but there is also now an executable <code>hello</code>. Furthermore, there is a new folder <code>bc</code> (named by the <code>-o</code> flag), which contains some intermediate binary files. Running the executeable, you should see something like this:</p>
+<pre><code>$ ./hello
+Hello World!</code></pre>
+<p>And there we have it, our first Tabitha program! It’s not very exciting, but you will soon be able to write a whole lot more with the language.</p>
+</div>
+    </body>
+</html>

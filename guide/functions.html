@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <title> Tabitha Programming Guide - Functions </title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div id="title-div"> 
+            <h1> Tabitha Programming Guide </h1>
+        </div>
+<div id="sidebar">
+<a href="introduction.html"> <div class="navbutton">Introduction</div> </a><br>
+<a href="getting_started.html"> <div class="navbutton">Getting Started</div> </a><br>
+<a href="type_system.html"> <div class="navbutton">Type System</div> </a><br>
+<a href="contexts.html"> <div class="navbutton">Contexts</div> </a><br>
+<a href="declaration.html"> <div class="navbutton">Declarations</div> </a><br>
+<a href="functions.html"> <div class="navbutton">Functions</div> </a><br>
+<a href="addresses.html"> <div class="navbutton">Addresses</div> </a><br>
+<a href="vectors.html"> <div class="navbutton">Vectors</div> </a><br>
+<a href="tables.html"> <div class="navbutton">Tables</div> </a><br>
+</div>
+<div id="content">
+<h1 id="functions">Functions</h1>
+<p>Functions are the bread and butter of most languages. Tabitha implements functions in the sense of a procedural language (e.g. <code>C</code>). They have a privileged existence, and are very distinct from data. Functions can take arguments and return values, though are a free to do neither of these things if they so choose.</p>
+<h2 id="tabitha-functions">Tabitha Functions</h2>
+<p>A <strong>Tabitha function</strong> is simply a function defined wholly within Tabitha source code.<br />
+Here is an example:</p>
+<pre><code>function foo (Int a, Int b) -&gt; Int {
+    a &gt; b =&gt; { return a }
+    b &gt; a =&gt; { return b } 
+    return a 
+}</code></pre>
+<p>This function is pure, in that any time you run it with the same arguments, the result will always be the same. This should make the Haskell programmers happy. Functions in Tabitha <em>can</em> have side-effects however.</p>
+<pre><code>attach external  std
+
+function bar (Int a) { 
+    std::printLn(&quot;Enter a number: &quot;)
+    Int b = std::readInt(10) # the argument `10` is the maximum 
+                             # number of digits to read
+    b &gt; a =&gt; {
+        std::printLn(&quot;Greater&quot;) 
+    }
+    b &lt; a =&gt; {
+        std::printLn(&quot;Lesser&quot;)
+    }
+    b == a =&gt; {
+        std::printLn(&quot;SNAP!&quot;) 
+    }
+} </code></pre>
+<p>Notice that <code>bar</code> does not give a return type, and that is because this function does <em>not</em> return a value. It is not technically a useless function however, since it has statements performing input and output.</p>
+<h2 id="external-functions">External Functions</h2>
+<p>Not all functions used in a Tabitha program need to have been defined in Tabitha. Indeed, Tabitha can call procedures defined in static and dynamic libraries (often written in C). This allows us to write Tabitha bindings to useful libraries quite easily.</p>
+<p>Tabitha calls functions defined elsewhere <strong>external functions</strong>, and they are declared like this:</p>
+<pre><code>external function internalName represents 
+    externalName(ArgType1, ArgType2, ArgType3, ...) -&gt; RetType</code></pre>
+<p>Note that no newline character is necessary here, nor does it affect the meaning of the declaration anyway. This is just for the sake of formatting. Tabitha allows differing <code>internalName</code> and <code>externalName</code>. The reason for this, is that often an external function will have a prefix or otherwise extended name to avoid namespace pollution. For example, there is a function in OpenGL called <code>glBufferData</code>. The <code>gl</code> prefix is there to distinguish the function from any other that might be called e.g. <code>bufferData</code>. In Tabitha, functions are referred to according to their home slab, so we can make the name snappier without risking such pollution.</p>
+<p>As with Tabitha functions, giving a return type is optional. The argument list is also completely optional.</p>
+</div>
+    </body>
+</html>
