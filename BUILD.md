@@ -13,26 +13,31 @@ Installing all dependencies from source this way however tends to take longer.
 
 1. [LLVM](https://llvm.org) - Used for creating intermediate files and ultimately assembling the binaries. 
     LLVM is simple to install on Debian-based systems. 
-    Basic testing indicates that LLVM-13 is sufficient. 
+    Basic testing indicates that LLVM-15 is sufficient. 
     You may choose a later version if you wish. 
     You may need to consult [https://apt.llvm.org](https://apt.llvm.org) for this.
     First add the follwing to your `/etc/apt/sources.list.d` in a file named `llvm.list`:
 
-        deb http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye main
-        deb-src http://apt.llvm.org/bullseye/ llvm-toolchain-bullseye main 
+        deb http://apt.llvm.org/bullseye-15/ llvm-toolchain-bullseye main
+        deb-src http://apt.llvm.org/bullseye-15/ llvm-toolchain-bullseye main 
    
     Then run:
 
         $ sudo apt update
-        $ sudo apt install llvm-13-dev
+        $ sudo apt install llvm-15-dev
     
-    By default, this installs the LLVM headers to `/usr/include/llvm-13` and `/usr/lib/llvm-13/`,
+    We also need the corresponding version of `clang`, 
+    
+        $ sudo apt install clang-15 
+        
+    By default, this installs the LLVM headers to `/usr/lib/llvm-15/include` and `/usr/lib/llvm-15/llvm-15`,
     so make sure these are part of your `CPLUS_INCLUDE_PATH` and `LD_LIBARY_PATH` respectively. 
  
 2. [cpp-peglib](https://github.com/yhirose/cpp-peglib) - Used for parsing Tabitha source files. 
-    Simply clone the repository: 
+    Simply clone the repository and checkout the given version: 
 
         current-dir$ git clone https://github.com/yhirose/cpp-peglib
+        current-dir$ git checkout v1.6.0 
 
     Then add the `current-dir` to your `CPLUS_INCLUDE_PATH`. 
 
