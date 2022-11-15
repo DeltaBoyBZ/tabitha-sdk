@@ -108,10 +108,11 @@ Otherwise:
 Make sure you're in the `tabitha-sdk-build` directory. 
 Then run: 
 
-    $ cmake -G Ninja ../tabitha-sdk
+    $ cmake -G Ninja -DTABI_LLVM_VERSION=15 ../tabitha-sdk
     $ ninja
     $ sudo ninja install 
     
+Of course you should enter the appropriate LLVM version number that you installed. 
 Assuming these commands ran successfully, add the following lines to your `~/.bashrc`. 
 
     export TABI_BIN=/usr/local/bin/tabitha
