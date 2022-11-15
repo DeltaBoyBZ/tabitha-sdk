@@ -1,0 +1,44 @@
+# Copyright 2022 Matthew Peter Smith
+
+# This file is provided under the terms of the Mozilla Public License - Version 2.0. 
+# A copy of the licence can be found in the root of The Tabitha SDK GitHub repository,
+#
+# https://github.com/DeltaBoyBZ/tabitha-sdk 
+#
+# or alternatively a copy can be found at,
+#
+# https://www.mozilla.org/media/MPL/2.0/index.815ca599c9df.txt
+
+
+
+alias type String represents Addr[Char] 
+alias type Memory represents Addr[None]
+
+external function printLn represents std_printLn(String)
+external function printIntLn represents std_printIntLn(Int)
+external function printFloatLn represents std_printFloatLn(Float)
+external function printCharLn represents std_printCharLn(Char) 
+external function printTruthLn represents std_printTruthLn(Truth) 
+external function readLn represents std_readLn(String) 
+external function sleep represents sleep(Int) 
+external function readFile represents std_readFile(String) -> String
+external function writeFile represents std_writeFile(String, String)
+external function appendFile represents std_appendFile(String, String)
+external function cos represents std_cos(Float) -> Float
+external function sin represents std_sin(Float) -> Float
+external function charToInt represents std_charToInt(Char) -> Int
+external function intToChar represents std_intToChar(Int) -> Char
+external function readInt represents std_readInt(Int) -> Int
+external function readFloat represents std_readFloat() -> Float 
+external function readChar represents std_readChar() -> Char
+external function stringToInt represents std_stringToInt(String) -> Int
+external function intToString represents std_intToString(Int) -> String
+external function intToLong represents std_intToLong(Int) -> Long
+external function intToFloat represents std_intToFloat(Int) -> Float
+external function escape represents std_escape(String) -> String
+external function intToSize represents std_intToSize(Int) -> Size
+external function mystInt represents std_cast(Addr[Int]) -> Addr[None]
+external function mystLong represents std_cast(Addr[Long]) -> Addr[None]
+external function mystFloat represents std_cast(Addr[Float]) -> Addr[None]
+external function printPtrLn represents std_printPtrLn(Addr[None])
+

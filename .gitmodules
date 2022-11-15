@@ -1,0 +1,6 @@
+[submodule "llvm-project"]
+	path = llvm-project
+	url = https://github.com/llvm/llvm-project
+[submodule "cpp-peglib"]
+	path = cpp-peglib
+	url = https://github.com/yhirose/cpp-peglib

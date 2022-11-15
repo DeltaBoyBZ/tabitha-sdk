@@ -1,0 +1,194 @@
+# Copyright 2022 Matthew Peter Smith
+
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+
+#   http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Slabs have the following top-level elements:
+# - Attachments # - Collection type definitions
+# - Functions
+# - Contexts
+# - Dumps 
+
+SLAB <- ((ATTACH / COLLECTION_TYPE / ALIAS_TYPE / EXTERNAL_FUNCTION / TABITHA_FUNCTION / CONTEXT / DUMP / COMMENT) _*)*
+
+# Attachments involve an ID given relative to the current slab, as well as an optional alias. 
+# Attachments can be:
+# - Local: The ID is effectively the relative filepath
+# - External: The ID is relative to the environment variable TABI_LIB
+
+COMMENT <- '#' (!'\n' .)*
+
+ATTACH <- "attach" (_+ ATTACH_EXTERNAL)? _+ REL_ID (_+ "as" _+ ATTACH_ALIAS)?
+ATTACH_EXTERNAL <- "external"
+REL_ID <- [a-zA-Z0-9_/]+
+ATTACH_ALIAS <- [a-zA-Z0-9_]+
+
+# Contexts consist of a list of member declarations. 
+
+CONTEXT <- "context" _+ CONTEXT_NAME _* '{' _*
+                (_* CONTEXT_MEMBER)*
+            _* '}'
+CONTEXT_MEMBER <- TYPE_REF _+ VARIABLE_NAME (_* '=' _* EXPRESSION)? 
+
+# Dumps consist of a list of member declarations.
+
+DUMP <- "dump" _+ DUMP_NAME _* '{' _*
+            (_* DUMP_MEMBER)*
+        _* '}'
+DUMP_MEMBER <- TYPE_REF _+ VARIABLE_NAME (_* '=' _* EXPRESSION)? 
+DUMP_NAME <- '_' [a-zA-Z0-9]* 
+
+# A Tabitha function consists of:
+# - A name
+# - An optional list of contexts to capture
+# - An optional list of arguments
+# - An optional return type (default is None)
+
+TABITHA_FUNCTION <- "function" _+ FUNCTION_NAME (_* CONTEXT_CAPTURE_LIST)? (_* FUNCTION_ARG_LIST)? _* (_* "->" _* TYPE_REF)? _* BLOCK
+CONTEXT_CAPTURE_LIST <- '<' _* CONTEXT_REF? (_* ',' _* CONTEXT_REF)* _* '>'
+FUNCTION_ARG_LIST <- '(' _* FUNCTION_ARG? (_* ',' _* FUNCTION_ARG)* _* ')'
+FUNCTION_ARG <- TYPE_REF _+ VARIABLE_NAME
+FUNCTION_NAME <- [a-zA-Z0-9_]+
+
+EXTERNAL_FUNCTION <- "external function" _+ INTERNAL_NAME _+ "represents" _+ EXTERNAL_NAME (_* EXTERNAL_ARG_LIST)? (_* "->" _* TYPE_REF)?
+INTERNAL_NAME <- FUNCTION_NAME
+EXTERNAL_NAME <- FUNCTION_NAME 
+EXTERNAL_ARG_LIST <- '(' _* (TYPE_REF (_+ VARIABLE_NAME)?)? (_* ',' _* (TYPE_REF (_+ VARIABLE_NAME)?))* _* ')'
+
+
+COLLECTION_TYPE <- "collection type" _+ TYPE_NAME _* '{' _*
+                        (_* COLLECTION_MEMBER)*
+                    _* '}'
+
+ALIAS_TYPE <- "alias type" _+ TYPE_NAME _+ "represents" _+ TYPE_REF
+
+BLOCK <- '{' _*
+            (_* STATEMENT)*    
+            _* '}'
+
+RETURN <- "return" (_+ EXPRESSION)?
+STACKED_DECLARATION <- ("stacked" _+)? TYPE_REF _+ VARIABLE_NAME (_* '=' _* EXPRESSION)?
+HEAPED_DECLARATION <- "heaped" _+ TYPE_REF _+ VARIABLE_NAME (_* '=' _* EXPRESSION)?
+ASSIGNMENT <- VALUE_REF _* '=' _* EXPRESSION
+CONDITIONAL <- EXPRESSION _* "=>" _* BLOCK
+BRANCH <- "branch" _* '{' _*
+                (_* EXPRESSION _* "=>" _* BLOCK)*
+                (_* "otherwise" _* BLOCK)?
+            _* '}'
+LOOP <- "loop" _* BLOCK _* "while" _+ EXPRESSION 
+
+TABLE_INSERT <- "insert" _+ '(' _* (EXPRESSION / NULL) (_* ',' _* (EXPRESSION / NULL))* _* ')' _+ "into" _* TABLE_REF (_* '>' _* ID_REF)?
+TABLE_DELETE <- "delete row" _+ EXPRESSION _* "from" _+ VALUE_REF
+TABLE_SET    <- "set"    _+ VALUE_REF _+ "to" _+ '(' _* (EXPRESSION / NULL) (_* ',' _* (EXPRESSION / NULL))* _* ')'
+TABLE_MEASURE <- "measure" _+ TABLE_REF _* '>' _* VALUE_REF
+TABLE_CRUNCH <- "crunch" _+ TABLE_REF (_* '>' _* VALUE_REF)? 
+VECTOR_SET   <- "set vector" _+ VALUE_REF (_+ "from" _+ FROM_INDEX)? _* "as" _+ '(' _* EXPRESSION? (_* ',' _* EXPRESSION)* _* ')' 
+FROM_INDEX <- EXPRESSION
+
+ID_REF <- VALUE_REF
+TABLE_REF <- VALUE_REF 
+
+NULL <- '_'
+
+PROCEDURE_CALL <- FUNCTION_REF _* '(' _* EXPRESSION? (_* ',' _* EXPRESSION)* _* ')'
+
+LABEL <- "label" _+ EXPRESSION _* "as" _+ VALUE_REF
+
+UNHEAP <- "unheap" _+ EXPRESSION (_* "as" _+ TYPE_REF)?
+
+STATEMENT <- (UNHEAP / LABEL / VECTOR_SET / TABLE_INSERT / TABLE_SET / TABLE_DELETE / TABLE_MEASURE / TABLE_CRUNCH / LOOP / BRANCH / STACKED_DECLARATION / HEAPED_DECLARATION / RETURN / BLOCK / ASSIGNMENT / CONDITIONAL / PROCEDURE_CALL / COMMENT) ';'? 
+
+
+VALUE_REF <- (QUERY _*)? ((DUMP_REF / CONTEXT_REF) _* "/" _*)? VARIABLE_NAME (_* VALUE_SUB_REF)*
+QUERY <- '@'
+MEMBER_REF <- '.' _* VARIABLE_NAME
+ELEMENT_REF <- '[' _* EXPRESSION _* ']'
+ROW_REF <- '.' _* VARIABLE_NAME _* '<' _* EXPRESSION _* '>'
+
+VALUE_SUB_REF <- ROW_REF / ELEMENT_REF / MEMBER_REF
+
+CONTEXT_REF <- (SLAB_NAME _* "::" _*)? CONTEXT_NAME
+DUMP_REF <- (SLAB_NAME _* "::" _*)? DUMP_NAME
+
+CONTEXT_NAME <- [A-Z][a-zA-Z0-9_]*
+SLAB_NAME <- [a-zA-Z0-9_]+
+
+INT_LITERAL <- NEG? _* DIGITS 'i'?
+LONG_LITERAL <- NEG? _* DIGITS 'l'
+SIZE_LITERAL <- NEG? _* DIGITS 'z'
+SHORT_LITERAL <- NEG? _* DIGITS 's'
+NEG <- '-'
+DIGITS <- [0-9]+
+FLOAT_LITERAL <- NEG? _* DIGITS '.' DIGITS 'f'?
+DOUBLE_LITERAL <- NEG? _* DIGITS '.' DIGITS 'd'
+CHAR_LITERAL <- '\'' CHAR_VAL '\''
+CHAR_VAL <- .
+STRING_LITERAL <- '"' STRING_CONTENTS '"'
+STRING_CONTENTS <- (!'"' .)*
+
+TRUTH_LITERAL <- TRUTH_TRUE / TRUTH_FALSE
+TRUTH_TRUE <- "true"
+TRUTH_FALSE <- "false"
+FUNCTION_CALL <- FUNCTION_REF _* '(' _* EXPRESSION? (_* ',' _* EXPRESSION)* _* ')' 
+
+PLUS <- "+"
+SUBTRACT <- "-"
+MULTIPLY <- "*"
+DIVIDE   <- "/"
+LESS_THAN <- "<"
+GREATER_THAN <- ">"
+LESS_THAN_EQ <- "<="
+GREATER_THAN_EQ <- ">="
+EQUALS <- "=="
+NOT_EQUAL <- "!="
+
+BRACKETED_EXPRESSION <- '(' _* EXPRESSION _* ')' 
+
+BINARY_OPERATOR <- NOT_EQUAL / EQUALS / PLUS / SUBTRACT / MULTIPLY / DIVIDE / LESS_THAN / GREATER_THAN / LESS_THAN_EQ / GREATER_THAN_EQ
+
+FUNCTION_REF <- (SLAB_NAME _* "::" _*)? FUNCTION_NAME 
+
+VARIABLE_VALUE <- VALUE_REF _* LOCATE? LOCATE <- '?'
+
+SINGLETON_EXPRESSION <- BRACKETED_EXPRESSION / STRING_LITERAL / TRUTH_LITERAL / CHAR_LITERAL / DOUBLE_LITERAL / SHORT_LITERAL / LONG_LITERAL / SIZE_LITERAL / FLOAT_LITERAL / INT_LITERAL / FUNCTION_CALL / VARIABLE_VALUE / NULL
+
+BINARY_EXPRESSION <- SINGLETON_EXPRESSION _* BINARY_OPERATOR _* EXPRESSION    
+
+EXPRESSION <- BINARY_EXPRESSION / SINGLETON_EXPRESSION
+
+INT_TYPE <- "Int"
+LONG_TYPE <- "Long"
+SHORT_TYPE <- "Short"
+DOUBLE_TYPE <- "Double"
+SIZE_TYPE <- "Size"
+FLOAT_TYPE <- "Float"
+CHAR_TYPE <- "Char"
+TRUTH_TYPE <- "Truth"
+NONE_TYPE <- "None"
+PRIMITIVE_TYPE <- SIZE_TYPE / INT_TYPE / LONG_TYPE / SHORT_TYPE / FLOAT_TYPE / DOUBLE_TYPE / CHAR_TYPE / TRUTH_TYPE / NONE_TYPE
+ADDRESS_TYPE <- "Addr" _* '[' _* TYPE_REF _* ']'
+VECTOR_TYPE <- "Vec" _* '[' _* TYPE_REF _* ',' _* (NULL / EXPRESSION) _* ']'
+TABLE_TYPE <- "Table" _* '[' _* TABLE_FIELD (_* ',' _* TABLE_FIELD)* _* ',' _* EXPRESSION _* ']'
+TABLE_FIELD <- TYPE_REF _+ VARIABLE_NAME
+
+TYPE_NAME <- [A-Z] [a-zA-Z0-9_]*
+
+TYPE_REF <-  ADDRESS_TYPE / VECTOR_TYPE / TABLE_TYPE / PRIMITIVE_TYPE / NAMED_TYPE 
+
+NAMED_TYPE <- (SLAB_NAME _* "::" _*)? TYPE_NAME
+
+COLLECTION_MEMBER <- TYPE_REF _+ VARIABLE_NAME
+
+VARIABLE_NAME <- [a-zA-Z][a-zA-Z0-9_]*
+
+~_ <- [ \t\n\r]
+

@@ -1,0 +1,36 @@
+==================================================
+The Tabitha SDK
+Copyright 2022 Matthew Peter Smith
+==================================================
+
+The Tabitha SDK has components provided under the terms of two standard open-source licences:
+
+1. The Apache License - Version 2.0 ("ALv2")
+2. The Mozilla Public License - Version 2.0 ("MPLv2")
+
+In particular, individual components are licensed as follows: 
+
+1. The Tabitha Compiler (`src/tabic`) and is provided under the terms of the ALv2. 
+2. The static resources of the compiler (`res`) are provided under the terms of the ALv2. 
+3. The files making up the Tabitha Core Library (`src/tabi_core`) are provided under the terms of the MPLv2.
+4. The files making up the Tabitha Standard Library (`src/tabi_std`) are provided under the terms of the MPLv2. 
+
+For any of these files, the corresponding licence is identified in comments near the top of that file. 
+
+The copyright holder and main contributor would like to make the following remarks concerning the choice of licensing: 
+
+1. The ALv2 does not recognise work which is separable from the covered work as being derivative. 
+    In particular, software compiled and linked via:
+The Tabitha SDK has two main dependencies, provided in this distribution as Git submodules. 
+Since this arguably constitutes a redistribution of those works, we reproduce their licences in the 
+dependency_licences folder in the root of the repository. 
+
+1. The LLVM Project is provided under the terms of the ALv2 with extra terms. 
+    The licence can be found in dependency_licences/LLVM_PROJECT_LICENCE .
+
+2. cpp-peglib is provided under the terms of the MIT License. 
+    The licence can be found in dependency_licences/CPP_PEGLIB_LICENCE .
+
+
+
+
