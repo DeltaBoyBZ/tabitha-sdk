@@ -52,8 +52,8 @@ and for this you should consult the respective licences.
 The Tabitha SDK has two main dependencies, each provided as a Git submodule. 
 For transparency, we reproduce their licences in the directory [dependency_licences](dependency_licences)
 
-- [The LLVM Project](llvm-project) is licensed according to [`licenses/LLVM_PROJECT_LICENCE.txt`](licences/LLVM_PROJECT_LICENCE.txt). 
+- [The LLVM Project](llvm-project) is licensed according to [`dependency-licences/LLVM_PROJECT_LICENCE.txt`](dependency-licences/LLVM_PROJECT_LICENCE.txt). 
   
-- [cpp-peglib](cpp-peglib) is licensed according to [`licences/CPP_PEGLIB_LICENCE.txt`](licences/CPP_PEGLIB_LICENCE.txt). 
+- [cpp-peglib](cpp-peglib) is licensed according to [`dependency-licences/CPP_PEGLIB_LICENCE.txt`](dependency-licences/CPP_PEGLIB_LICENCE.txt). 
 
 
