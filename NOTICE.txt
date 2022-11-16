@@ -20,7 +20,12 @@ For any of these files, the corresponding licence is identified in comments near
 The copyright holder and main contributor would like to make the following remarks concerning the choice of licensing: 
 
 1. The ALv2 does not recognise work which is separable from the covered work as being derivative. 
-    In particular, software compiled and linked via:
+    In particular, software compiled and linked via The Tabitha Compiler is not a-priori derivative of the compiler itself. 
+
+2. The MPLv2 provides files under a file-by-file basis.
+    In particular, The Tabitha Core Library and The Tabitha Standard Library may be linked to otherwise original work without
+    said work being classed as derivative. 
+
 The Tabitha SDK has two main dependencies, provided in this distribution as Git submodules. 
 Since this arguably constitutes a redistribution of those works, we reproduce their licences in the 
 dependency_licences folder in the root of the repository. 

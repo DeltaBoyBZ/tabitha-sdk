@@ -16,12 +16,9 @@ As of now, the Tabitha SDK is only known to build on Linux.
 Specifically, the development machine was running Debian 11. 
 Simple testing has also been done on Ubuntu 20.02. 
 
-1. [The LLVM Project](https://github.com/llvm/llvm-project) - Main development used LLVM-16, however testing suggests LLVM-13 is sufficient. 
+1. [The LLVM Project](https://github.com/llvm/llvm-project) - Main development used LLVM-16, however testing suggests LLVM-15 is sufficient. 
 
 2. [cpp-peglib](https://github.com/yhirose/cpp-peglib) - A parsing library used to process Tabitha source files fed to `tabic`.
-    Simply clone the repository somewhere (for the sake of instruction the folder is `~/packages`:
-    
-        ~/packages$ git clone https://github.com/yhirose/cpp-peglib
 
 ## Building the SDK  
 Please see [`BUILD.md`](BUILD.md) for detailed building and installation instructions.  
