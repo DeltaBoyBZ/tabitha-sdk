@@ -1,0 +1,4 @@
+html: src
+	./web.sh 
+
+
