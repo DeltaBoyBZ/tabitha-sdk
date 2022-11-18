@@ -26,6 +26,8 @@ limitations under the License.
 #include<cpp-peglib/peglib.h>
 #include<cstdlib>
 
+#define WINDOWS
+
 static tabic::CreateStatus _createStatus = tabic::CREATE_STATUS_NONE; 
 
 #define CREATE_FAIL _createStatus = CREATE_STATUS_FAIL
@@ -62,18 +64,26 @@ tabic::CreateStatus tabic::createBundle(std::string rootSlabFilename, std::strin
     //get all _libPaths from TABI_LIB
     int k = 0;
     int k0 = 0; 
+#ifdef WINDOWS
+    while((k = TABI_LIB.find(";", k0)) != std::string::npos)
+    {
+        _libPaths.push_back(TABI_LIB.substr(k0, k - k0));
+        k0 = k+1; 
+    }     
+#else
     while((k = TABI_LIB.find(":", k0)) != std::string::npos)
     {
         _libPaths.push_back(TABI_LIB.substr(k0, k - k0));
         k0 = k+1; 
     }     
+#endif
     _libPaths.push_back(TABI_LIB.substr(k0, TABI_LIB.length() - k0)); 
     _cwd = cwd; 
     *bundle = new Bundle(rootSlabFilename); 
     //Create the PEG parser
     {
         try
-        { 
+        {
             std::string grammarSource = Util::readFile(TABI_RES + "/grammar/tabitha.peg"); 
             (*bundle)->create.pegParser = new peg::parser(grammarSource); 
             (*bundle)->create.pegParser->enable_ast(); 

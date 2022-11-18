@@ -27,16 +27,15 @@ limitations under the License.
 #include"llvm/IR/DataLayout.h"
 
 
+#define WINDOWS 
+
 /**
  * Elements such as calling convention are determined by the system. 
  */
-#ifdef __linux__
-static llvm::CallingConv::ID TABITHA_CALLING_CONVENTION = llvm::CallingConv::X86_64_SysV; 
-//static llvm::CallingConv::ID TABITHA_CALLING_CONVENTION = llvm::CallingConv::C; 
-#elif _WIN64 
+#ifdef WINDOWS
 static llvm::CallingConv::ID TABITHA_CALLING_CONVENTION = llvm::CallingConv::Win64;
-#else 
-static llvm::CallingConv::ID TABITHA_CALLING_CONVENTION = llvm::CallingConv::C; 
+#else
+static llvm::CallingConv::ID TABITHA_CALLING_CONVENTION = llvm::CallingConv::X86_64_SysV; 
 #endif
 
 static llvm::LLVMContext llvmContext; 

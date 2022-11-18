@@ -15,10 +15,16 @@ limitations under the License.
 ]===]
 
 add_executable(tabic tabic.cpp create.cpp parse.cpp build.cpp write.cpp pre.cpp util.cpp) 
+execute_process(COMMAND CMD /c llvm-config --libs OUTPUT_VARIABLE TABIC_LIBS)
+execute_process(COMMAND CMD /c llvm-config --libs OUTPUT_VARIABLE TABIC_SYSTEM_LIBS)
 
-if(DEFINED TABI_LLVM_VERSION)
-target_link_libraries(tabic "LLVM-${TABI_LLVM_VERSION}" rt dl pthread m z tinfo)
-else()
-target_link_libraries(tabic "LLVM-15" rt dl pthread m z tinfo)
-endif()
+execute_process(COMMAND llvm-config --libs all
+                OUTPUT_STRIP_TRAILING_WHITESPACE 
+                OUTPUT_VARIABLE llvm_libraries)
+execute_process(COMMAND llvm-config --system-libs all
+                OUTPUT_STRIP_TRAILING_WHITESPACE 
+                OUTPUT_VARIABLE llvm_sys_libraries)
 
+target_link_directories(tabic PUBLIC "C:/llvm_dev/lib")
+target_link_libraries(tabic ${llvm_libraries})
+target_link_libraries(tabic ${llvm_sys_libraries})

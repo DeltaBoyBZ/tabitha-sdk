@@ -34,7 +34,14 @@ limitations under the License.
 
 #include<sys/types.h>
 #include<sys/stat.h>
+
+#define WINDOWS 
+
+#ifdef WINDOWS
+#include<windows.h> 
+#else
 #include<unistd.h>
+#endif
 
 void tabic::writeBundle(Bundle* bundle)
 {
@@ -72,10 +79,14 @@ void tabic::writeSlab(Slab* slab)
     std::string outputDirectory = *(std::string*)Util::options["o"];  
 
     struct stat st = {0};
+#ifdef WINDOWS
+    CreateDirectory((LPCSTR)outputDirectory.c_str(), NULL);
+#else
     if(stat(outputDirectory.c_str(), &st) == -1)
     {
         mkdir(outputDirectory.c_str(), 0700); 
     }
+#endif
 
     std::error_code EC;
     llvm::raw_fd_ostream OS(outputDirectory + "/" + bcFilename, EC, llvm::sys::fs::OpenFlags::OF_None);

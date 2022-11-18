@@ -25,6 +25,8 @@ add_subdirectory(src/tabic)
 add_subdirectory(src/tabi_core)
 add_subdirectory(src/tabi_std)
 
+add_compile_definitions(WINDOWS)
+
 target_include_directories(tabic PUBLIC include)
 
 set_target_properties(tabic

@@ -170,8 +170,8 @@ struct tabic::VectorType
  */
 struct tabic::TableField
 {
-    Type* type;         ///< The Type of the field. 
-    std::string name;   ///< The name of the field. 
+    Type* type = nullptr;         ///< The Type of the field. 
+    std::string name = "";   ///< The name of the field. 
 }; 
 
 /** @brief A type representing a Codd table with columns of given types. 

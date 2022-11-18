@@ -20,7 +20,16 @@ limitations under the License.
 #include"tabic/write.hpp"
 
 #include<iostream>
+#include<vector>
+
+#define WINDOWS 
+
+#ifdef WINDOWS
+#include<windows.h> 
+#include<direct.h>
+#else
 #include<unistd.h>
+#endif
 
 static std::string TABI_LIB = std::getenv("TABI_LIB");
 static std::vector<std::string> _libPaths = {}; 
@@ -63,13 +72,25 @@ int main(int argc, const char** argv)
     //get all _libPaths from TABI_LIB
     int k = 0;
     int k0 = 0; 
+#ifdef WINDOWS
+    while((k = TABI_LIB.find(";", k0)) != std::string::npos)
+    {
+        _libPaths.push_back(TABI_LIB.substr(k0, k - k0));
+        k0 = k+1; 
+    }     
+#else
     while((k = TABI_LIB.find(":", k0)) != std::string::npos)
     {
         _libPaths.push_back(TABI_LIB.substr(k0, k - k0));
         k0 = k+1; 
     }     
+#endif
     _libPaths.push_back(TABI_LIB.substr(k0, TABI_LIB.length() - k0)); 
+#ifdef WINDOWS
+    _getcwd(CWD, 256);
+#else
     getcwd(CWD, 256);
+#endif
     //Parse command line arguments
     std::string rootSlabFilename     = "";
     std::string outputDirectory      = std::string(CWD); 
@@ -160,16 +181,20 @@ int main(int argc, const char** argv)
     }
     else
     {
+#ifdef WINDOWS
+        linkCommand = "gcc " + outputDirectory + "/*.o -o " + bundle->create.rootSlab->create.name + " -ltabi_std_cross -ltabi_core_cross ";
+#else
         linkCommand = "clang -no-pie " + outputDirectory + "/*.o -o " + bundle->create.rootSlab->create.name + " -lm -ltabi_std_cross -ltabi_core_cross ";
+#endif
     }
 
     for(std::string &dir : _libPaths)
     {
-        linkCommand += "-L" + dir + " ";
+        linkCommand += "-L\"" + dir + "\" ";
     }
     for(std::string &dir : linkDirectories)
     {
-        linkCommand += "-L" + dir + " ";
+        linkCommand += "-L\"" + dir + "\" ";
     }
     for(std::string &lib : linkLibraries)
     {
@@ -179,6 +204,7 @@ int main(int argc, const char** argv)
     {
         linkCommand += "-l:lib" + lib + ".a "; 
     }
+    std::cout << linkCommand << std::endl;
     std::system(linkCommand.c_str());
     return 0;
 }
