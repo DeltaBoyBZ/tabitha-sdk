@@ -1,10 +1,13 @@
 # Tabitha SDK Build Instructions 
-Listed are the instructions to build the Tabitha SDK. 
+Listed are the instructions to build the Tabitha SDK on Windows systems. 
 If there are any errors, please raise them in the Issues section of the [GitHub repository](https://github.com/DeltaBoyBZ/tabitha-sdk).
 
 ## System Requirements
-As of now The Tabitha SDK is known only to build on Linux. 
-The main development machine ran Debian 11 on AMD64 architecture. 
+If you are on a Linux system, please see [BUILD.md](BUILD.md). 
+Otherwise, to follow these isntructions, you must be on a Windows system. 
+Instructions herein are written assuming you're using the Windows Command Prompt, 
+as opposed to any Bash emulator. 
+You should run the prompt as an administrator. 
 
 ## Getting the Dependencies Independently
 The Tabitha SDK has two main dependencies, without which the compiler cannot function. 
@@ -15,29 +18,13 @@ Installing all dependencies from source this way however tends to take longer.
     LLVM is simple to install on Debian-based systems. 
     Basic testing indicates that LLVM-15 is sufficient. 
     You may choose a later version if you wish. 
-    You may need to consult [https://apt.llvm.org](https://apt.llvm.org) for this.
-    First add the follwing to your `/etc/apt/sources.list.d` in a file named `llvm.list`:
-
-        deb http://apt.llvm.org/bullseye-15/ llvm-toolchain-bullseye main
-        deb-src http://apt.llvm.org/bullseye-15/ llvm-toolchain-bullseye main 
-   
-    Then run:
-
-        $ sudo apt update
-        $ sudo apt install llvm-15-dev
-    
-    We also need the corresponding version of `clang`, 
-    
-        $ sudo apt install clang-15 
-        
-    By default, this installs the LLVM headers to `/usr/lib/llvm-15/include` and `/usr/lib/llvm-15/llvm-15`,
-    so make sure these are part of your `CPLUS_INCLUDE_PATH` and `LD_LIBARY_PATH` respectively. 
+    As far I can tell, the only legitimate way to get LLVM development files on a Windows system, is to build from source. 
  
 2. [cpp-peglib](https://github.com/yhirose/cpp-peglib) - Used for parsing Tabitha source files. 
     Simply clone the repository and checkout the given version: 
 
-        current-dir$ git clone https://github.com/yhirose/cpp-peglib
-        current-dir$ git checkout v1.6.0 
+        current-dir> git clone https://github.com/yhirose/cpp-peglib
+        current-dir> git checkout v1.6.0 
 
     Then add the `current-dir` to your `CPLUS_INCLUDE_PATH`. 
 
@@ -45,20 +32,20 @@ Installing all dependencies from source this way however tends to take longer.
 ### Getting The Tabitha SDK Source 
 To get the main source for The Tabitha SDK, clone the repository from GitHub. 
 
-    $ git clone https://github.com/DeltaBoyBZ/tabitha-sdk
+    > git clone https://github.com/DeltaBoyBZ/tabitha-sdk
 
-### (optional) Getting the Dependency Source
+### Getting the Dependency Sources 
 By default, this will clone only the files written expressly for the SDK, and none of the dependencies.
 If you also want the dependencies, you need to run extra commands. 
 
-    $ git submodule update --init llvm-project
-    $ git submodule update --init cpp-peglib
+    > git submodule update --init llvm-project
+    > git submodule update --init cpp-peglib
     
 These commands should clone specific commits from each respective project to your system. 
 To check this has been done correctly, simply check the corresponding subdirectories are nonempty. 
 
-    $ ls llvm-project
-    $ ls cpp-peglib
+    > dir llvm-project
+    > dir cpp-peglib
      
 ## Building from Source
 Throughout this section, we assume that you have both [CMake](https://cmake.org) and [Ninja](https://ninja-build.org).
@@ -69,10 +56,10 @@ Outside for the project folder, create a new folder which will contain everythin
 You can call this whatever you want, but for the sake of demonstration we will give it the obvious name. 
 We shall also place this just outside the source root, so `tabitha-sdk` and `tabitha-sdk-build` are siblings in the file tree.
 
-    $ mkdir tabitha-sdk-build
-    $ cd tabitha-sdk-build
+    > mkdir tabitha-sdk-build
+    > cd tabitha-sdk-build
     
-### (optional) Building the Dependencies
+### Building the Dependencies
 If you installed the dependencies via the other method earlier, you can skip this step. 
 Otherwise:
 
@@ -81,23 +68,22 @@ Otherwise:
     These steps work for me, but if they don't work for you, consult [Getting Started with the LLVM System](https://llvm.org/docs/GettingStarted.html).
     Inside `tabitha-sdk-build`, create a new folder. 
     
-        $ mkdir llvm-build
-        $ cd llvm-build
+        > mkdir llvm-build
+        > cd llvm-build
 
-    We run CMake with some specific arguments: 
-    
-        $ cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="clang:lld" ../tabitha-sdk/llvm-project/llvm 
+    Then run CMake with some specific arguments. 
+
+        > cmake -G Ninja -DCMAKE_BUILD_TYPE=Release -DLLVM_ENABLE_PROJECTS="clang:lld" -DCMAKE_INSTALL_PREFIX="C:\llvm_dev" ../tabitha-sdk/llvm-project/llvm 
 
     If this runs successfully, then run the `ninja` command. 
 
-        $ ninja
+        > ninja
 
     You can install everything with:
     
-        $ sudo ninja install 
+        > ninja install 
         
     Then you should make sure the header files and libraries are in your `CPLUS_INCLUDE_PATH` and `LD_LIBARY_PATH` respectively. 
-    When using this method, they should be found under `/usr/local`. 
 
 2. Setting up `cpp-peglib`. 
     This is a header-only library, with the repository containing some optional toolsets for developers. 
@@ -108,19 +94,13 @@ Otherwise:
 Make sure you're in the `tabitha-sdk-build` directory. 
 Then run: 
 
-    $ cmake -G Ninja -DCMAKE_INSTALL_PREFIX="/usr/local" ../tabitha-sdk
-    $ ninja
-    $ sudo ninja install 
+    > cmake -G Ninja -DCMAKE_INSTALL_PREFIX="C:\tabitha" ../tabitha-sdk
+    > ninja
+    > sudo ninja install 
     
 Of course you should enter the appropriate LLVM version number that you installed. 
-Assuming these commands ran successfully, add the following lines to your `~/.bashrc`. 
+Define environment variable `TABI_BIN` as `C:\tabitha\bin` and also add this to your `PATH`. Define `TABI_LIB` as `C:\tabitha\lib` and add this to your `LD_LIBRARY_PATH`. Finally define `TABI_RES` as `C:\tabitha\res`. 
 
-    export TABI_BIN=/usr/local/bin/tabitha
-    export TABI_LIB=/usr/local/lib/tabitha
-    export TABI_RES=/usr/local/share/tabitha/res
-    export PATH=${PATH}:${TABI_BIN} 
-    export LD_LIBARY_PATH=${LD_LIBARY_PATH}:${TABI_LIB}
-    
 Note that `TABI_LIB` serves other purposes than being searched for linkable libraries, 
 so in particular do **not** omit its definition. 
 
@@ -128,8 +108,8 @@ so in particular do **not** omit its definition.
 If you have followed the above steps correctly, you should now have a working Tabitha SDK installation. 
 You can test this by creating a project somewhere, 
 
-    $ mkdir tabitha-sdk-test
-    $ cd tabitha-sdk-test
+    > mkdir tabitha-sdk-test
+    > cd tabitha-sdk-test
 
 and creating there a file `test.tabi`: 
 
@@ -143,7 +123,7 @@ and creating there a file `test.tabi`:
 Now run:
 
     $ tabic test.tabi -o bc 
-    $ ./test 
+    $ .\test.exe 
 
 You should see printed to your terminal: 
 
