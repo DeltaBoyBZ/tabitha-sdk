@@ -26,8 +26,6 @@ limitations under the License.
 #include<cpp-peglib/peglib.h>
 #include<cstdlib>
 
-#define WINDOWS
-
 static tabic::CreateStatus _createStatus = tabic::CREATE_STATUS_NONE; 
 
 #define CREATE_FAIL _createStatus = CREATE_STATUS_FAIL

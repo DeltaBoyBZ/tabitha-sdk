@@ -27,8 +27,6 @@ limitations under the License.
 #include"llvm/IR/DataLayout.h"
 
 
-#define WINDOWS 
-
 /**
  * Elements such as calling convention are determined by the system. 
  */

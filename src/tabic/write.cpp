@@ -35,8 +35,6 @@ limitations under the License.
 #include<sys/types.h>
 #include<sys/stat.h>
 
-#define WINDOWS 
-
 #ifdef WINDOWS
 #include<windows.h> 
 #else
@@ -78,10 +76,10 @@ void tabic::writeSlab(Slab* slab)
 
     std::string outputDirectory = *(std::string*)Util::options["o"];  
 
-    struct stat st = {0};
 #ifdef WINDOWS
     CreateDirectory((LPCSTR)outputDirectory.c_str(), NULL);
 #else
+    struct stat st = {0};
     if(stat(outputDirectory.c_str(), &st) == -1)
     {
         mkdir(outputDirectory.c_str(), 0700); 

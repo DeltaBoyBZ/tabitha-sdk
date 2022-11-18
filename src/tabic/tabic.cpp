@@ -22,8 +22,6 @@ limitations under the License.
 #include<iostream>
 #include<vector>
 
-#define WINDOWS 
-
 #ifdef WINDOWS
 #include<windows.h> 
 #include<direct.h>
@@ -204,7 +202,6 @@ int main(int argc, const char** argv)
     {
         linkCommand += "-l:lib" + lib + ".a "; 
     }
-    std::cout << linkCommand << std::endl;
     std::system(linkCommand.c_str());
     return 0;
 }

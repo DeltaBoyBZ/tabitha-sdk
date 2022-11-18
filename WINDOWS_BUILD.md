@@ -96,7 +96,7 @@ Then run:
 
     > cmake -G Ninja -DCMAKE_INSTALL_PREFIX="C:\tabitha" ../tabitha-sdk
     > ninja
-    > sudo ninja install 
+    > ninja install 
     
 Of course you should enter the appropriate LLVM version number that you installed. 
 Define environment variable `TABI_BIN` as `C:\tabitha\bin` and also add this to your `PATH`. Define `TABI_LIB` as `C:\tabitha\lib` and add this to your `LD_LIBRARY_PATH`. Finally define `TABI_RES` as `C:\tabitha\res`. 
@@ -123,7 +123,7 @@ and creating there a file `test.tabi`:
 Now run:
 
     $ tabic test.tabi -o bc 
-    $ .\test.exe 
+    $ .\test 
 
 You should see printed to your terminal: 
 

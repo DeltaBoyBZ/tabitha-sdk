@@ -21,11 +21,13 @@ project(Tabitha_SDK)
 enable_language(ASM_NASM)
 set(CMAKE_ASM_NASM_OBJECT_FORMAT elf64)
 
+if(WIN32)
+    add_compile_definitions(WINDOWS)
+endif()
+
 add_subdirectory(src/tabic) 
 add_subdirectory(src/tabi_core)
 add_subdirectory(src/tabi_std)
-
-add_compile_definitions(WINDOWS)
 
 target_include_directories(tabic PUBLIC include)
 
@@ -52,6 +54,6 @@ set_target_properties(tabi_core_raw
 
 install(TARGETS tabic DESTINATION bin)
 install(TARGETS tabi_std_cross tabi_std_raw tabi_core_cross tabi_core_raw DESTINATION lib)
-install(DIRECTORY res DESTINATION res) 
+install(DIRECTORY res/grammar DESTINATION res) 
 install(FILES src/tabi_std/std.tabi DESTINATION lib) 
 
