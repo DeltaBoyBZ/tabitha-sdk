@@ -52,8 +52,15 @@ set_target_properties(tabi_core_raw
     PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 
-install(TARGETS tabic DESTINATION bin)
-install(TARGETS tabi_std_cross tabi_std_raw tabi_core_cross tabi_core_raw DESTINATION lib)
-install(DIRECTORY res/grammar DESTINATION res) 
-install(FILES src/tabi_std/std.tabi DESTINATION lib) 
+if(WIN32)
+    install(TARGETS tabic DESTINATION bin)
+    install(TARGETS tabi_std_cross tabi_std_raw tabi_core_cross tabi_core_raw DESTINATION lib)
+    install(DIRECTORY res/grammar DESTINATION res) 
+    install(FILES src/tabi_std/std.tabi DESTINATION lib) 
+else()
+    install(TARGETS tabic DESTINATION bin/tabitha)
+    install(TARGETS tabi_std_cross tabi_std_raw tabi_core_cross tabi_core_raw DESTINATION lib/tabitha)
+    install(DIRECTORY res/grammar DESTINATION res share/tabitha) 
+    install(FILES src/tabi_std/std.tabi DESTINATION lib/tabitha) 
+endif()
 
