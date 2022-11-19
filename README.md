@@ -12,9 +12,8 @@ The easiest way to get started is to go to this repository's [GitHub pages](http
 You can also go directly to the [Tabitha Programming Guide](https://deltaboybz.github.io/tabitha-sdk/guide/introduction.html). 
 
 ## System Requirements and Dependencies
-As of now, the Tabitha SDK is only known to build on Linux. 
-Specifically, the development machine was running Debian 11. 
-Simple testing has also been done on Ubuntu 20.02. 
+The Tabitha SDK builds on both Linux and Windows, though the Windows version is less-throughly tested. 
+The main development machine was running Debian 11. 
 
 1. [The LLVM Project](https://github.com/llvm/llvm-project) - Main development used LLVM-16, however testing suggests LLVM-15 is sufficient. 
 

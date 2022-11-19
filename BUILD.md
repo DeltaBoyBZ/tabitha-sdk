@@ -109,6 +109,14 @@ Make sure you're in the `tabitha-sdk-build` directory.
 Then run: 
 
     $ cmake -G Ninja -DCMAKE_INSTALL_PREFIX="/usr/local" ../tabitha-sdk
+    
+If this gives an error, try: 
+
+    $ cmake -G Ninja -DCMAKE_INSTALL_PREFIX="/usr/local" -DTABI_LLVM_VERSION=15../tabitha-sdk
+
+with whatever version of LLVM you chose to install. 
+Now you can run: 
+
     $ ninja
     $ sudo ninja install 
     

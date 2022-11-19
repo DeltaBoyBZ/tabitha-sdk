@@ -18,13 +18,21 @@ add_executable(tabic tabic.cpp create.cpp parse.cpp build.cpp write.cpp pre.cpp 
 execute_process(COMMAND CMD /c llvm-config --libs OUTPUT_VARIABLE TABIC_LIBS)
 execute_process(COMMAND CMD /c llvm-config --libs OUTPUT_VARIABLE TABIC_SYSTEM_LIBS)
 
-execute_process(COMMAND llvm-config --libs all
-                OUTPUT_STRIP_TRAILING_WHITESPACE 
-                OUTPUT_VARIABLE llvm_libraries)
-execute_process(COMMAND llvm-config --system-libs all
-                OUTPUT_STRIP_TRAILING_WHITESPACE 
-                OUTPUT_VARIABLE llvm_sys_libraries)
+if(DEFINED TABI_LLVM_VERSION)
+    execute_process(COMMAND llvm-config-${TABI_LLVM_VERSION} --libs all
+                    OUTPUT_STRIP_TRAILING_WHITESPACE 
+                    OUTPUT_VARIABLE llvm_libraries)
+    execute_process(COMMAND llvm-config-${TABI_LLVM_VERSION} --system-libs all
+                    OUTPUT_STRIP_TRAILING_WHITESPACE 
+                    OUTPUT_VARIABLE llvm_sys_libraries)
+else()
+    execute_process(COMMAND llvm-config --libs all
+                    OUTPUT_STRIP_TRAILING_WHITESPACE 
+                    OUTPUT_VARIABLE llvm_libraries)
+    execute_process(COMMAND llvm-config --system-libs all
+                    OUTPUT_STRIP_TRAILING_WHITESPACE 
+                    OUTPUT_VARIABLE llvm_sys_libraries)
+endif()
 
-target_link_directories(tabic PUBLIC "C:/llvm_dev/lib")
 target_link_libraries(tabic ${llvm_libraries})
 target_link_libraries(tabic ${llvm_sys_libraries})
