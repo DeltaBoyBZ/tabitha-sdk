@@ -34,5 +34,9 @@ else()
                     OUTPUT_VARIABLE llvm_sys_libraries)
 endif()
 
+if(WIN32)
+	target_link_directories(tabic PUBLIC "${TABI_LLVM_INSTALL_DIR}/lib")
+endif()
+
 target_link_libraries(tabic ${llvm_libraries})
 target_link_libraries(tabic ${llvm_sys_libraries})
