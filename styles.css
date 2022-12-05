@@ -20,15 +20,15 @@ body {
 
 #logo-div {
     position: relative; 
-    left: 20vw; 
-    width: 60vw;
+    left: 32.5vw; 
+    height: 3vh;
     height: 30vw;
     /*background-color: blue;*/
 }
 
 #logo-without-tabitha {
     position: absolute;
-    width: 60vw;
+    width: 35vw;
     animation: fade-in;
     animation-duration: 1s;
     animation-fill-mode: both;
@@ -36,7 +36,7 @@ body {
 
 #logo-with-tabitha {
     position: absolute; 
-    width: 60vw;
+    width: 35vw;;
     animation: fade-in; 
     animation-duration: 1s;
     animation-delay: 1s; 
