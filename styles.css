@@ -94,7 +94,21 @@ body {
 }
 
 .landing-button:hover {
-    background-color: lightblue; 
-    color: black; 
+    background-color: purple; 
 }
+
+#dev-home {
+    position: absolute;
+    background-color: blue;
+    color: white;
+    top: 3%;
+    left: 3%;
+    padding: 1%;
+    text-decoration: none; 
+}
+
+#dev-home:hover {
+    background-color: purple;
+}
+
 
