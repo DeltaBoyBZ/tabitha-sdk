@@ -1,8 +1,14 @@
 # Getting Started
 
-## Downloading the SDK 
+## Downloading and Installing the SDK 
 
-## Setting Up the Development Environment 
+If you are on a Debian/Ubuntu or Windows system, you install the SDK with one of the [Releases](https://github.com/DeltaBoyBZ/tabitha-sdk/releases). 
+Otherwise, you will need to build from source. 
+For this, you clone the repository, 
+    
+    git clone https://github.com/DeltaBoyBZ/tabitha-sdk
+
+and follow the instructions in [BUILD.md](https://github.com/DeltaBoyBZ/tabitha-sdk/blob/master/BUILD.md). 
 
 ## Writing your First Program 
 It is traditional for the first application written in any language to be one which simplye prints, 
