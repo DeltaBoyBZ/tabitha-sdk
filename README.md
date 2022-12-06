@@ -8,7 +8,10 @@ It also features a rich type system, creating types with particular functionalit
 
 ## Getting Started
 
-The easiest way to get started is to go to this repository's [GitHub pages](https://deltaboybz.github.io/tabitha-sdk). 
+If you are on Debian/Ubuntu or Windows, you can check out the project's [Releases](https://github.com/DeltaBoyBZ/tabitha-sdk/releases).
+Otherwise, you will need to build from source (see below). 
+
+The easiest way to learn is to go to this repository's [GitHub pages](https://deltaboybz.github.io/tabitha-sdk). 
 You can also go directly to the [Tabitha Programming Guide](https://deltaboybz.github.io/tabitha-sdk/guide/introduction.html). 
 
 ## System Requirements and Dependencies
