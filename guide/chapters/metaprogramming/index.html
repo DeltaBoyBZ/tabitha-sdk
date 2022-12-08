@@ -1,0 +1,103 @@
+<html>
+    <head><link rel="stylesheet" href="https://deltaboybz.github.io/tabitha-sdk/guide/css/global.css">
+<link rel="stylesheet" href="https://deltaboybz.github.io/tabitha-sdk/guide/css/chapter.css">
+    </head>
+    <body>
+    <div id="title-div">
+        <h1> Tabitha Programming Guide </h1>
+        <h2> Metaprogramming </h2> 
+    </div>
+    <div id="logo-div">
+        <a href="https://deltaboybz.github.io/tabitha-sdk">
+            <img id="tabi-logo" src="https://deltaboybz.github.io/tabitha-sdk/guide/svg/logo.svg ">
+        </a>
+    </div>
+    <div id="menu-div">
+        <hr class="toc"> 
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/introduction"><div class="toc"><h3 class="toc">Introduction</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/getting_started"><div class="toc"><h3 class="toc">Getting Started</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/type_system"><div class="toc"><h3 class="toc">The Type System</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/contexts"><div class="toc"><h3 class="toc">Contexts</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/declarations"><div class="toc"><h3 class="toc">Declarations</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/functions"><div class="toc"><h3 class="toc">Functions</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/addresses"><div class="toc"><h3 class="toc">Addresses</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/vectors"><div class="toc"><h3 class="toc">Vectors</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/tables"><div class="toc"><h3 class="toc">Tables</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/metaprogramming"><div class="toc"><h3 class="toc">Metaprogramming</h3></div></a></li>
+        <hr class="toc">
+        
+    </div>
+    <div id="text-div">
+    <p>Some parts of programmingg are really tedious.
+Depending on the functionality of the language,
+and how high or low level it is,
+some operations require a heck of a lot of typing.
+To solve this, a lot of languages emply some idea of metaproramming.
+Simply put, metaprogramming is when one writes code to aid the creation of other code.</p>
+<p>A weak example is the idea of a preprocessor macro in C.
+This allows us to <code>#define</code> pieces  of code corresponding to some mnemonic.
+I say this is a weak example,
+for macros are quite limited in what they can really do.
+There are no such things as loops in C macros (though a macro can be defined to contain a C loop).</p>
+<p>Another example of metaprogramming would be the C++ template system.
+This is a more featureful version of metaprogramming,
+however it is quite infamous for its difficulty.
+This is particularly true with regard to the often cryptic error messages which arise from its usage.</p>
+<p>Tabitha has a quite versatile form of metaprogramming which takes place in the preprocessor.
+In Tabitha we can create blocks of arbitrary text which is fed into a temporary file in your workspace.
+A user-defined command is then run and the contents of another file is insertd into your source where this block was originally.</p>
+<h2 id="inserting-a-metaprogramming-block">Inserting a Metaprogramming Block</h2>
+<p>This concept is best-illustrated by means of an example.</p>
+<pre><code>collection type Quad {
+##python3 tabic_pree.src &gt; tabic_pre.dst##
+for i in range(4): 
+    print(&quot;Float x{}\nFloat y{}&quot;.format(i+1, i+1))
+##
+}
+</code></pre>
+<p>See that we have a set of three double-hashed <code>##</code>.
+Two important pieces of text are sandwiched in this set.
+Between the second two <code>##</code>, is some text which during preprocessing is written to <code>tabic_pre.src</code>.
+Betwen the first two <code>###, is a command executed during the preprocessing stage.  After this command is run, the preprocessor replaces the entire block with the contents of the file </code>tabic_pre.dst` in-memory.
+The end result is that the source code is by the parser is acutally:</p>
+<pre><code>collection type Quad {
+Float x1
+Float y1
+Float x2
+Float y2
+Float x3
+Float y3
+Float x4
+Float y4
+}
+</code></pre>
+<p>The beauty of Tabitha metaprogramming,
+is that the block test and the commands are arbitrary.
+Through this mechanism, you can use any command line tool and any language to generate Tabitha code.</p>
+<p>The main drawback of this technique,
+is that it potentially hurts cross-compatibility;
+one may be using tools specific to a particular system,
+and should hence be wary of this if they hope to port their programs to other environments.</p>
+
+    </div>
+    </body>
+</html>

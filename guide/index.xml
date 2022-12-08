@@ -6,7 +6,7 @@
     <description>Recent content on Tabitha Programming Guide</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-uk</language>
-    <lastBuildDate>Thu, 08 Dec 2022 15:17:59 +0000</lastBuildDate><atom:link href="https://deltaboybz.github.io/tabitha-sdk/guide/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 08 Dec 2022 18:49:34 +0000</lastBuildDate><atom:link href="https://deltaboybz.github.io/tabitha-sdk/guide/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Introduction</title>
       <link>https://deltaboybz.github.io/tabitha-sdk/guide/chapters/introduction/</link>
@@ -44,6 +44,16 @@ Int - The Integer Type - The counting numbers 1, 2, 3, &amp;hellip; their negati
       
       <guid>https://deltaboybz.github.io/tabitha-sdk/guide/chapters/contexts/</guid>
       <description>Introduction Along with the table type, contexts are the flagship feature of Tabitha. It is through contexts, that Tabitha seeks to make the use of global data tenable in a large program. The basic idea, is that global data is stored in contexts, and any function that wishes to use this data must capture the context. This way, any bugs relating to a specific piece of data can be easily tracked down to a subset of all functions in the source code.</description>
+    </item>
+    
+    <item>
+      <title>Metaprogramming</title>
+      <link>https://deltaboybz.github.io/tabitha-sdk/guide/chapters/metaprogramming/</link>
+      <pubDate>Thu, 08 Dec 2022 18:49:34 +0000</pubDate>
+      
+      <guid>https://deltaboybz.github.io/tabitha-sdk/guide/chapters/metaprogramming/</guid>
+      <description>Some parts of programmingg are really tedious. Depending on the functionality of the language, and how high or low level it is, some operations require a heck of a lot of typing. To solve this, a lot of languages emply some idea of metaproramming. Simply put, metaprogramming is when one writes code to aid the creation of other code.
+A weak example is the idea of a preprocessor macro in C.</description>
     </item>
     
     <item>
