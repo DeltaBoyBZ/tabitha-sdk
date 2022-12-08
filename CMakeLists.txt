@@ -25,6 +25,10 @@ if(WIN32)
     add_compile_definitions(WINDOWS)
 endif()
 
+if(TABI_LLVM_VERSION LESS 14 OR TABI_LLVM_LEGACY)
+    add_compile_definitions(TABI_LLVM_LEGACY)
+endif()
+
 add_subdirectory(src/tabic) 
 add_subdirectory(src/tabi_core)
 add_subdirectory(src/tabi_std)

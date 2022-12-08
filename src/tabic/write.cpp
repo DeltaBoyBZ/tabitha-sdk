@@ -26,7 +26,17 @@ limitations under the License.
 #include"llvm/Support/Host.h"
 #include"llvm/IR/PassManager.h"
 #include"llvm/IR/LegacyPassManager.h"
+
+/*
+ * Older versions of LLVM place TargetRegistry.h in `llvm/Support`
+ * as opposed to `llvm/MC`.
+ */
+#ifdef TABI_LLVM_LEGACY
+#include"llvm/Support/TargetRegistry.h"
+#else
 #include"llvm/MC/TargetRegistry.h"
+#endif
+
 
 #include"llvm/IR/Verifier.h"
 #include"llvm/Support/ToolOutputFile.h"
