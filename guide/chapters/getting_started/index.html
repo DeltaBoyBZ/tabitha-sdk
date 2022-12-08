@@ -1,0 +1,92 @@
+<html>
+    <head><link rel="stylesheet" href="https://deltaboybz.github.io/tabitha-sdk/guide/css/global.css">
+<link rel="stylesheet" href="https://deltaboybz.github.io/tabitha-sdk/guide/css/chapter.css">
+    </head>
+    <body>
+    <div id="title-div">
+        <h1> Tabitha Programming Guide </h1>
+        <h2> Getting Started </h2> 
+    </div>
+    <div id="logo-div">
+        <a href="https://deltaboybz.github.io/tabitha-sdk">
+            <img id="tabi-logo" src="https://deltaboybz.github.io/tabitha-sdk/guide/svg/logo.svg ">
+        </a>
+    </div>
+    <div id="menu-div">
+        <hr class="toc"> 
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/introduction"><div class="toc"><h3 class="toc">Introduction</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/getting_started"><div class="toc"><h3 class="toc">Getting Started</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/type_system"><div class="toc"><h3 class="toc">The Type System</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/contexts"><div class="toc"><h3 class="toc">Contexts</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/declarations"><div class="toc"><h3 class="toc">Declarations</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/functions"><div class="toc"><h3 class="toc">Functions</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/addresses"><div class="toc"><h3 class="toc">Addresses</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/vectors"><div class="toc"><h3 class="toc">Vectors</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/tables"><div class="toc"><h3 class="toc">Tables</h3></div></a></li>
+        <hr class="toc">
+        
+    </div>
+    <div id="text-div">
+    <h2 id="downloading-and-installing-the-sdk">Downloading and Installing the SDK</h2>
+<p>If you are on a Debian/Ubuntu or Windows system,
+you can install SDK with one of the <a href="https://github.com/DeltaBoyBZ/tabitha-sdk/releases">Releases</a>.
+Otherwise, you will need to build from source.
+For this, you clone the repository,</p>
+<pre><code>git clone https://github.com/DeltaBoyBZ/tabitha-sdk
+</code></pre>
+<h2 id="writing-your-first-program">Writing Your First Program</h2>
+<p>It is traditional,
+for the first application written in any lanugage to be one which simply prints,
+&ldquo;Hello World!&rdquo; to the console.
+We see  no reason to break this tradition.
+Create a file <code>hello.tabi</code>, in a new folder <code>tabi-hello</code>
+(call these anything you like but these are the names we shall use):</p>
+<pre><code>attach external std
+
+function main -&gt; Int {
+    std::printLn(&quot;Hello World!&quot;) 
+    return 0 
+}
+</code></pre>
+<p>The program can be compile with the command:</p>
+<pre><code>$ tabic hello.tabi -o bc 
+</code></pre>
+<p>The folder <code>tabi-hello</code> should now look something like this:</p>
+<pre><code>tabi-hello
+|-- bc
+|-- |-- EXTERNAL_std.bc
+|-- |-- EXTERNAL_std.o
+|-- |-- LOCAL_hello.bc
+|-- |-- LOCAL_hello.o
+|-- hello
+|-- hello.tabi
+</code></pre>
+<p>We of course have our original source file <code>hello.tabi</code>,
+but there is also now an executable <code>hello</code>.
+Furthermoree, there is a new folder <code>bc</code> (named by the <code>-o</code> flag),
+which contains some intermediate binary files.
+Running the executable, you should see something like this:</p>
+<pre><code>$ ./hello
+Hello World!
+</code></pre>
+
+    </div>
+    </body>
+</html>

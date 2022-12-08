@@ -1,0 +1,26 @@
+body
+{
+    margin: 5%; 
+}
+
+ul.toc
+{
+    list-style: none; 
+}
+
+li.toc 
+{
+    margin: 1%; 
+}
+
+a.toc
+{
+    font-weight: bold; 
+    color: white; 
+}
+
+a.toc:hover
+{
+    background-color: purple; 
+}
+

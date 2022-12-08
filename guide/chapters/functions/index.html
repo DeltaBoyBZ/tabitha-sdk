@@ -1,0 +1,112 @@
+<html>
+    <head><link rel="stylesheet" href="https://deltaboybz.github.io/tabitha-sdk/guide/css/global.css">
+<link rel="stylesheet" href="https://deltaboybz.github.io/tabitha-sdk/guide/css/chapter.css">
+    </head>
+    <body>
+    <div id="title-div">
+        <h1> Tabitha Programming Guide </h1>
+        <h2> Functions </h2> 
+    </div>
+    <div id="logo-div">
+        <a href="https://deltaboybz.github.io/tabitha-sdk">
+            <img id="tabi-logo" src="https://deltaboybz.github.io/tabitha-sdk/guide/svg/logo.svg ">
+        </a>
+    </div>
+    <div id="menu-div">
+        <hr class="toc"> 
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/introduction"><div class="toc"><h3 class="toc">Introduction</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/getting_started"><div class="toc"><h3 class="toc">Getting Started</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/type_system"><div class="toc"><h3 class="toc">The Type System</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/contexts"><div class="toc"><h3 class="toc">Contexts</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/declarations"><div class="toc"><h3 class="toc">Declarations</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/functions"><div class="toc"><h3 class="toc">Functions</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/addresses"><div class="toc"><h3 class="toc">Addresses</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/vectors"><div class="toc"><h3 class="toc">Vectors</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/tables"><div class="toc"><h3 class="toc">Tables</h3></div></a></li>
+        <hr class="toc">
+        
+    </div>
+    <div id="text-div">
+    <p>Functions are the bread and butter of most languages.
+Tabitha implements functions in the sense of a procedural language (e.g <code>C</code>).
+They have a privileged existence,
+and are very distinct from data.
+Functions can take arguments and return values,
+though are freee to do niether of these things if they so choose.</p>
+<h2 id="tabitha-functions">Tabitha Functions</h2>
+<p>A <strong>Tabitha function</strong> is simply a function defined wholly within Tabitha source code.
+Here is an example:</p>
+<pre><code>function foo (Int a, int b) -&gt; Int {
+    a &gt; b =&gt; { return a }
+    return b
+}
+</code></pre>
+<p>This function is pure,
+in that any time you run it with the same arguments the r esult will always be the same.
+This should make the Haskell programmers h appy.
+Functions in Tabitha <em>can</em> have side-effects however.</p>
+<pre><code>attach external std
+
+function bar (Int a) {
+    std::printLn(&quot;Enter a number: &quot;)
+    Int b = std::readInt(10) # the argument `10` refers to the maximum
+                             # number of digits out integer will have in decimal 
+    b &gt; a =&gt; {
+        std::printLn(&quot;Greater&quot;)
+    }
+    b &lt; a =&gt; {
+        std::printLn(&quot;Lesser&quot;)
+    }
+    b == a =&gt; {
+        std::printLn(&quot;SNAP!&quot;) 
+    }
+}
+</code></pre>
+<p>Notice that <code>bar</code> does not give a return type,
+and that is because this function does <em>not</em> return a value.
+It is not technically a useless function however,
+since it has statements performing input and output.
+This is an example of a <em>side-effect</em>, and makes the function <em>impure</em>.</p>
+<h2 id="external-functions">External Functions</h2>
+<p>Not all functions used in a Tbaitha program need to have been defined in Tabitha.
+Indeed, Tabtha can call procedures defined in static and dynamic libraries
+(often written in <code>C</code>).
+This allows us to write Tabitha bindings to useful libraries quite easily.</p>
+<p>Tabitha calls functions defined elsewhere <strong>external functions</strong>,
+and they are declared like this:</p>
+<pre><code>external function internalName represents 
+    externalName(ArgType1, ArgType2, ArgTypes3, . . .) -&gt; RetType
+</code></pre>
+<p>Note that no newline character is necessary here,
+nor does it affect the meaning of the declaration anyway.
+This is just for the sake of formatting.
+Tabitha allows differing <code>internalName</code> and <code>externalName</code>.
+The reason for this,
+is that often an external function will have a prefix or otherwise extended name to avoid namespace pollution.
+For example, there is a function in OpenGL called <code>glBufferData</code>.
+The <code>gl</code> prefix is there to distinguish the function from any other that might be called e.g. <code>bufferData</code>.
+In Tabitha, functions are referred according to their home slab,
+so we can make the name snappier without risking such pollution.</p>
+<p>As with Tbaitha functions, giving a return type is optional.
+The argument list is also completely optional.</p>
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,170 @@
+<html>
+    <head><link rel="stylesheet" href="https://deltaboybz.github.io/tabitha-sdk/guide/css/global.css">
+<link rel="stylesheet" href="https://deltaboybz.github.io/tabitha-sdk/guide/css/chapter.css">
+    </head>
+    <body>
+    <div id="title-div">
+        <h1> Tabitha Programming Guide </h1>
+        <h2> Vectors </h2> 
+    </div>
+    <div id="logo-div">
+        <a href="https://deltaboybz.github.io/tabitha-sdk">
+            <img id="tabi-logo" src="https://deltaboybz.github.io/tabitha-sdk/guide/svg/logo.svg ">
+        </a>
+    </div>
+    <div id="menu-div">
+        <hr class="toc"> 
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/introduction"><div class="toc"><h3 class="toc">Introduction</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/getting_started"><div class="toc"><h3 class="toc">Getting Started</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/type_system"><div class="toc"><h3 class="toc">The Type System</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/contexts"><div class="toc"><h3 class="toc">Contexts</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/declarations"><div class="toc"><h3 class="toc">Declarations</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/functions"><div class="toc"><h3 class="toc">Functions</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/addresses"><div class="toc"><h3 class="toc">Addresses</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/vectors"><div class="toc"><h3 class="toc">Vectors</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/tables"><div class="toc"><h3 class="toc">Tables</h3></div></a></li>
+        <hr class="toc">
+        
+    </div>
+    <div id="text-div">
+    <h2 id="declaring-a-vector">Declaring a Vector</h2>
+<p>A vector is declared just like any other variable.
+For example,</p>
+<pre><code>Vec[Int, 10] x
+stacked Vec[Int, 10] y
+heaped Vec[Int, 10] z
+</code></pre>
+<p>will each declare vectors of integers <code>10</code> elements long.
+The vector itself is  formally a ponter as far as the compiler is concerned.
+This pointer we refer to as the <strong>handle</strong> to the vector,
+leading us to the location in memory where the elements are stored.</p>
+<p>If a vector is declared as <code>heaped</code>, then not only is the handle stored on the heap,
+but so are the elements.
+By default however, like all variables, the handle and elements are stored on the stack.</p>
+<h2 id="dealing-with-the-elements">Dealing with the Elements</h2>
+<p>Elements of a vector are referenced by their index in the vector.
+For example,</p>
+<pre><code>Vec[Int, 10] x
+x[3] = 10
+</code></pre>
+<p>will set element <code>3</code> of vector <code>x</code> to <code>10</code>.
+The <em>first</em> element of the vector is indexed by <code>x[0]</code>.
+We can use any expression to index a avector element,
+so long as that expression is of integer type.
+Because the value of this e xpression can thus only be determined at runtime,
+the  compiler does not check whether or nothe reference is in bounds
+(complying with the vector&rsquo;s  length).
+Hence it is possible to cause a <em>segmentation fault</em> at runtime;
+a program may query memory which has not been allocated.
+This is an issue with which C programmers are very familiar,
+however can come as a shock to programmers coming from languages which do runtime checks.
+These checks are skipped over for the sake of performance.
+It is uncumbent on the developer to place these check in their code,
+if they desire the extra safety.</p>
+<h2 id="setting-multiple-elements">Setting Multiple Elements</h2>
+<p>Assigning to multiple element individually by their index can be ver tedious.
+Tabitha hence has a syntactic sugar for this.</p>
+<pre><code>Vec[Int, 10] x
+set vector x from 3 as (23, -5, 11)
+</code></pre>
+<p>The <code>set vector</code> statement sets as many element of the vector,
+as there are expressions in the comma-separated tuple <code>(23, -5, 11)</code>.
+This assignment starts from the element with index <code>3</code>.
+Once again there are no compile-time or runtime checks as to whether we are remaining withing the vector bounds.</p>
+<h2 id="fuzzy-vectors">Fuzzy Vectors</h2>
+<p>Sometimes we don&rsquo;t know in-advance w hat the length of our vector is going to be.
+The type system accounts for this, by having a special type of vector called a <strong>fuzzy vector</strong>.
+A fuzzy vector is simply a vector with no specified length.
+They are declared with a null argument for a length with the usual <code>Vec</code> functor.
+For example,</p>
+<pre><code>Vec[Int, _] x
+</code></pre>
+<p>will declare a fuzzy vector of integers.
+To attach this vector to memory,
+we use the <code>label</code> statement.
+For example, we can write something like,</p>
+<pre><code>Vec[Int, 10] x      # just a normal vector
+Vec[Int,  _] y      # a fuzzy vector
+label x[0]? as y    
+</code></pre>
+<p>which make it so the fuzzy vector <code>y</code> represents the data held in <code>x</code>.</p>
+<p>I envision that fuzzy vectors will be used  most as the arguments to functions
+which want to take any number of values of a particular type.
+This this example:</p>
+<pre><code>attach external std
+
+function sum (Vec[Int, _] x, Int numTerms) -&gt; Int {
+    Int s = 0
+    Int n = 0
+    loop {
+        s = s + x[n]
+        n = n + 1
+    } while n &lt; numTerms
+    return s 
+}
+
+function main -&gt; Int {
+    Vec[Int, 5]
+    set vector x from 0 as (1, 2, 3, 4, 5)
+    Vec[Int, _] y
+    label x[0]? as y 
+    Int s = sum(y, 5) 
+    std::printIntLn(s)
+    return 0
+}
+</code></pre>
+<p>We pass a fuzzy vector to the <code>sum</code> function,
+letting the function know how many alements are in the vector.
+Now that we could also do it like this:</p>
+<pre><code>attach external std
+
+function sum (Addr[Int] x, Int numTerms) -&gt; Int {
+    Vec[Int, _] y 
+    label x as y 
+    Int s = 0
+    Int n = 0
+    loop {
+        s = s + y[n] 
+        n = n + 1
+    } while n &lt; numTerms
+    return s
+}
+
+function main -&gt; Int {
+    Vec[Int, 5] x 
+    set vector `x` from 0 as (1, 2, 3, 4, 5)
+    Int s = sum(x[0]?, 5)
+    std::printIntLn(s)
+    return 0
+}
+</code></pre>
+<p>We pass an address to the function,
+and the function interprets it as an address for the first element of the vector.</p>
+<p>Unlike in <code>C</code>, addresses do not enjoy a dual existence as simple pointers,
+and handles for arrays.
+In order to reference elements of an array encoded by an address,
+the variable must be of vector type.
+We cannot use index notation on an address.
+Really, fuzzy vector are there to allow us to treat addresses as vector,
+though with an extra step.</p>
+
+    </div>
+    </body>
+</html>

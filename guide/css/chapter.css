@@ -1,0 +1,110 @@
+body {
+    font-family: Helvetica;
+}
+
+#logo-div {
+    position: fixed; 
+    left: 0px; 
+    top: 0px; 
+    width: 200px; 
+    height: 150px; 
+}
+
+#text-div {
+    position: absolute; 
+    left: 200px; 
+    margin-left:  5vw; 
+    margin-right: 5vw; 
+    text-align: justify; 
+    z-index: 0; 
+    top: 150px; 
+}
+
+#menu-div {
+    position: fixed;
+    width: 200px; 
+    height: calc(100vh - 150px); 
+    left: 0vw;
+    top: 150px;
+    text-align: center;
+    overflow-y: auto;
+}
+
+#tabi-logo {
+    width: 100%; 
+    padding-bottom: 2vh; 
+    padding-top: 2vh; 
+}
+
+#title-div {
+    position: fixed; 
+    top: 0vh; 
+    left: 200px; 
+    z-index: 1; 
+    width: calc(100vw - 150px); 
+    height: 150px; 
+    text-align: center;
+    background-color: #111111;
+}
+
+#title-div > h1 {
+    text-align: center;
+}
+
+#nav-div {
+    text-align: center; 
+    position: fixed;
+    background-color: #111111; 
+    width: 100vw; 
+    height: 10vh; 
+    z-index: 1; 
+    top: 0%; 
+}
+
+ul.toc {
+     list-style: none;
+}
+
+a.toc {
+    text-decoration: none; 
+}
+
+div.toc {
+    position: relative; 
+    width: 200px; 
+    background-color: darkblue;
+    margin: 0px; 
+    /*
+    border: solid; 
+    border-width: 0.01vh; 
+    border-color: white; 
+    */
+}
+
+div.toc:hover {
+    background-color: purple;
+}
+
+h3.toc {
+    margin: 0%; 
+    padding: 2%; 
+}
+
+hr.toc {
+    margin: 0%;
+    padding: 0%; 
+}
+
+img.tabi {
+    width: 40%;
+}
+
+.fig {
+    position: relative; 
+    width: 100%; 
+    text-align: center;
+}
+
+.fig > img {
+    margin: auto;
+}

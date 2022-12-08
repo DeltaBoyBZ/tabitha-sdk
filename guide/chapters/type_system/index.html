@@ -1,0 +1,147 @@
+<html>
+    <head><link rel="stylesheet" href="https://deltaboybz.github.io/tabitha-sdk/guide/css/global.css">
+<link rel="stylesheet" href="https://deltaboybz.github.io/tabitha-sdk/guide/css/chapter.css">
+    </head>
+    <body>
+    <div id="title-div">
+        <h1> Tabitha Programming Guide </h1>
+        <h2> Type System </h2> 
+    </div>
+    <div id="logo-div">
+        <a href="https://deltaboybz.github.io/tabitha-sdk">
+            <img id="tabi-logo" src="https://deltaboybz.github.io/tabitha-sdk/guide/svg/logo.svg ">
+        </a>
+    </div>
+    <div id="menu-div">
+        <hr class="toc"> 
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/introduction"><div class="toc"><h3 class="toc">Introduction</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/getting_started"><div class="toc"><h3 class="toc">Getting Started</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/type_system"><div class="toc"><h3 class="toc">The Type System</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/contexts"><div class="toc"><h3 class="toc">Contexts</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/declarations"><div class="toc"><h3 class="toc">Declarations</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/functions"><div class="toc"><h3 class="toc">Functions</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/addresses"><div class="toc"><h3 class="toc">Addresses</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/vectors"><div class="toc"><h3 class="toc">Vectors</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/tables"><div class="toc"><h3 class="toc">Tables</h3></div></a></li>
+        <hr class="toc">
+        
+    </div>
+    <div id="text-div">
+    <h2 id="primitive-types">Primitive Types</h2>
+<p>Like most type systems,
+Tabitha has a privileged set of types it considers foundational.
+These are, in no particular order:</p>
+<ul>
+<li><code>Int</code> - The Integer Type - The counting numbers 1, 2, 3, &hellip;
+their negative counterparts -1, -2, -3, &hellip; and zero (0).</li>
+<li><code>Float</code> -  The Floating Point Type - Numbers on the real number line - e.g. 5.77, 3.14, -66.1.</li>
+<li><code>Char</code> - The Character Type - Characters representable according to the ASCII standard -
+e.g. &lsquo;a&rsquo;, &lsquo;z&rsquo;, &lsquo;!&rsquo;.</li>
+<li><code>Truth</code>  - The Truth Type - Either <code>true</code> or <code>false</code> - Other languages might call this a <em>Boolean</em>.</li>
+<li><code>None</code> - The lack of a type.</li>
+<li><code>Long</code> - Long integers, i.e. those which take up 64 bits of memory.</li>
+<li><code>Short</code> - Short integers, i.e. those which take up 16 bits of memory.</li>
+<li><code>Double</code> - Double precision floating point numbers, i.e. using 64 bits of memory.</li>
+<li><code>Size</code> - The Size Type -  Depending on the system, can be 32 or 64 bit.</li>
+</ul>
+<p>The first few types should be understandable to most people.
+It is possible for one to question the utility of <code>None</code>,<br>
+but this is usually used for <em>functions</em> which don&rsquo;t return a value (but may have side-effects).
+It is also used in some function declarations to signify generic pointers as Addr[None].</p>
+<p>The pont of <code>Long</code> is to store itegers which require more than the usual 32 bytes to encode.
+The point of <code>Short</code> us ti stire integers which do not require as much as 32 bytes,
+and when memory might be at a premium.
+The <code>Double</code> type is necessary for some scientific applications.</p>
+<h2 id="collection-types">Collection Types</h2>
+<p>Primitives are capable  of a lot,
+but at some point it is useful to define more complex types.
+Tabitha&rsquo;s <strong>colletion types</strong> are very similar to <em>structs</em> in C.
+Here is an example:</p>
+<pre><code>collection type Point {
+    Float x
+    Float y
+}
+</code></pre>
+<p>This snippet defines a new type Point which contains two <code>Float</code> members.
+Collection types can contains any number of members,
+and these members can be of any type.</p>
+<pre><code>collection type Person {
+    Int age
+    Float height
+    Char favouriteLetter
+}
+</code></pre>
+<h2 id="address-types">Address Types</h2>
+<p>Sometimes it is more useful to deal with the <em>memory address</em> of data,
+rather than the data itself.
+This can be for the sake of convenience,
+or it may be to allow direct mutability by subroutines.
+Furthermore, performance can be ggained from using pointers effectively.</p>
+<p>In Tabithaa, memory addresses have their own types which reflect the type of data found at that address.
+For example, <code>Addr[Int]</code> is the type for a meory address where we find an  integer.
+We can apply <code>Addr</code> to any type in order to obtain a new types.
+We can even construct someting like <code>Addr[Addr[Int]]</code>,
+which is the typefor data representing a memory address,
+at which you find data for another memory address.</p>
+<p>Tabitha calls <code>Addr</code> a <em>functor</em>, which acts on Tabitha types.
+It should be noted however,
+that the application of that  term has no real deep meaning from category theory,
+as far as the language is concerned.
+It is just a helpful label for <code>Addr</code> along with similar objects.</p>
+<h2 id="vector-types">Vector Types</h2>
+<p>Another e xample of a Tabitha functor is the <code>Vec</code> functor.
+This is a slightly more complex function, taking two arguments.
+For example, <code>Vec[Int, 10]</code> is a type for data representing a vector of <code>Int</code> data, <code>10</code> elements long.
+Individual elements of the vector can be references by their index.</p>
+<p>There are also <strong>fuzzy vectors</strong>, which are vectors without a defined length.
+These can be tricky to deal with,
+but we will get to that in the dedicated chapter on <a href="/vectors">Vectors</a>.</p>
+<h2 id="table-types">Table Types</h2>
+<p>Beyond vectors, Tabitha also has <strong>tables</strong>.
+This is again represented by a functor <code>Table</code>.
+This functor can t ake the arbitrary number of arguments.
+For example,</p>
+<pre><code>Table[Int a, Float b,  Float c, 10]
+</code></pre>
+<p>is a type representing a table with three <strong>fields</strong> (the columns) and <code>10</code> rows.
+Each field has a type and a name.
+For example, there is a field name <code>b</code> whose elements are a type <code>Float</code>.
+Each row of a table also has a unique integer ID.</p>
+<p>Tables are the namesake of Tabitha.
+They were the initial inspiration for the language,
+since I noticed there was no nice way to quickly create column-based table in C.
+By column-based,  I meana that the columns represent contiguous sections of memory.
+The best I have been able to do, is a header-only library in C++, <a href="https://deltaboybz.github.io/dop-c">DOP-C</a>.</p>
+<p>Tables like these may effectively be used as relational model within software,
+and following the Codd rules offer  a promising replacement for the hierarchical object model.</p>
+<h2 id="alias-types">Alias Types</h2>
+<p>Using the fuctors listed above,
+we can create a rich variety of types.
+However as types get more complex,
+our fingers get worn out typing out the . . . Well, types.
+To solve this, Tabitha allows us to attach a more snappy name to types.
+For example,</p>
+<pre><code>alias type String represents Addr[Char]
+</code></pre>
+<p>is found in the Tabitha standard slab.</p>
+
+    </div>
+    </body>
+</html>

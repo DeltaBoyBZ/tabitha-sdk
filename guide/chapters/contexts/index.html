@@ -1,0 +1,87 @@
+<html>
+    <head><link rel="stylesheet" href="https://deltaboybz.github.io/tabitha-sdk/guide/css/global.css">
+<link rel="stylesheet" href="https://deltaboybz.github.io/tabitha-sdk/guide/css/chapter.css">
+    </head>
+    <body>
+    <div id="title-div">
+        <h1> Tabitha Programming Guide </h1>
+        <h2> Contexts </h2> 
+    </div>
+    <div id="logo-div">
+        <a href="https://deltaboybz.github.io/tabitha-sdk">
+            <img id="tabi-logo" src="https://deltaboybz.github.io/tabitha-sdk/guide/svg/logo.svg ">
+        </a>
+    </div>
+    <div id="menu-div">
+        <hr class="toc"> 
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/introduction"><div class="toc"><h3 class="toc">Introduction</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/getting_started"><div class="toc"><h3 class="toc">Getting Started</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/type_system"><div class="toc"><h3 class="toc">The Type System</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/contexts"><div class="toc"><h3 class="toc">Contexts</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/declarations"><div class="toc"><h3 class="toc">Declarations</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/functions"><div class="toc"><h3 class="toc">Functions</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/addresses"><div class="toc"><h3 class="toc">Addresses</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/vectors"><div class="toc"><h3 class="toc">Vectors</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/tables"><div class="toc"><h3 class="toc">Tables</h3></div></a></li>
+        <hr class="toc">
+        
+    </div>
+    <div id="text-div">
+    <h2 id="introduction">Introduction</h2>
+<p>Along with the table type, contexts are the flagship feature of Tabitha.
+It is through contexts,
+that Tabitha seeks to make the use of global data tenable in a large program.
+The basic idea, is that global data is stored in <strong>contexts</strong>,
+and any function that wishes to use this data  must capture the context.
+This way,
+any bugs relating to a specific piece of data can be easily tracked down to a subset of all functions in the source code.</p>
+<p>Contexts also remove the need for creating types which are only used once (think context types from C).
+Furthermore, thihs global data need not be passed around awkwardly from one procedure to another,
+but rather any procedure that needs the data can have it.
+While this level of global data access is often seen as an issue,
+it is circumvented by the requirement that functions must explicitly show that they can access this data via the capturing syntax.</p>
+<p>A <strong>dump</strong> is similar to a context,
+except there are not as many restrictionso as to where its members can be used.
+These are envisioned to be convenient stores for constants,
+especially when writing API bindings.</p>
+<h2 id="creating-a-context">Creating a Context</h2>
+<p>Here is an example of a context:</p>
+<pre><code>context Data {
+    Int x
+    Float y
+    std::string msg
+}
+</code></pre>
+<p>All a context is, is a static collection  of dta.
+There is only one copy of this dataset in the entire program;
+contexts cannot be instanced.</p>
+<h2 id="capturing-and-using-a-context">Capturing and Using a Context</h2>
+<p>For a function to read or modify data in a context,
+it must first capture said context.
+Here is an example:</p>
+<pre><code>function foo &lt;Data&gt; { 
+    Data/x = 69 
+    Data/msg = &quot;Hello&quot;
+}
+</code></pre>
+
+    </div>
+    </body>
+</html>

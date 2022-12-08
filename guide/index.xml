@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tabitha Programming Guide</title>
+    <link>https://deltaboybz.github.io/tabitha-sdk/guide/</link>
+    <description>Recent content on Tabitha Programming Guide</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-uk</language>
+    <lastBuildDate>Thu, 08 Dec 2022 15:17:59 +0000</lastBuildDate><atom:link href="https://deltaboybz.github.io/tabitha-sdk/guide/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Introduction</title>
+      <link>https://deltaboybz.github.io/tabitha-sdk/guide/chapters/introduction/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://deltaboybz.github.io/tabitha-sdk/guide/chapters/introduction/</guid>
+      <description>What is Tabitha? Tabitha is a new programming language designed by me, Matthew Smith. It is a procedural language, which takes a novel approach to global data. Iit also has an elegant type system, which allows for a rich variety of data-types.
+Why is Tabitha? Tabitha was created as a showcase of my vision for the design of larger applications. When creating large applications in C or C++, there are some difficulties in managing a large amount of data used by many functions.</description>
+    </item>
+    
+    <item>
+      <title>Getting Started</title>
+      <link>https://deltaboybz.github.io/tabitha-sdk/guide/chapters/getting_started/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://deltaboybz.github.io/tabitha-sdk/guide/chapters/getting_started/</guid>
+      <description>Downloading and Installing the SDK If you are on a Debian/Ubuntu or Windows system, you can install SDK with one of the Releases. Otherwise, you will need to build from source. For this, you clone the repository,
+git clone https://github.com/DeltaBoyBZ/tabitha-sdk Writing Your First Program It is traditional, for the first application written in any lanugage to be one which simply prints, &amp;ldquo;Hello World!&amp;rdquo; to the console. We see no reason to break this tradition.</description>
+    </item>
+    
+    <item>
+      <title>Type System</title>
+      <link>https://deltaboybz.github.io/tabitha-sdk/guide/chapters/type_system/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://deltaboybz.github.io/tabitha-sdk/guide/chapters/type_system/</guid>
+      <description>Primitive Types Like most type systems, Tabitha has a privileged set of types it considers foundational. These are, in no particular order:
+Int - The Integer Type - The counting numbers 1, 2, 3, &amp;hellip; their negative counterparts -1, -2, -3, &amp;hellip; and zero (0). Float - The Floating Point Type - Numbers on the real number line - e.g. 5.77, 3.14, -66.1. Char - The Character Type - Characters representable according to the ASCII standard - e.</description>
+    </item>
+    
+    <item>
+      <title>Contexts</title>
+      <link>https://deltaboybz.github.io/tabitha-sdk/guide/chapters/contexts/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://deltaboybz.github.io/tabitha-sdk/guide/chapters/contexts/</guid>
+      <description>Introduction Along with the table type, contexts are the flagship feature of Tabitha. It is through contexts, that Tabitha seeks to make the use of global data tenable in a large program. The basic idea, is that global data is stored in contexts, and any function that wishes to use this data must capture the context. This way, any bugs relating to a specific piece of data can be easily tracked down to a subset of all functions in the source code.</description>
+    </item>
+    
+    <item>
+      <title>Tables</title>
+      <link>https://deltaboybz.github.io/tabitha-sdk/guide/chapters/tables/</link>
+      <pubDate>Thu, 08 Dec 2022 15:17:59 +0000</pubDate>
+      
+      <guid>https://deltaboybz.github.io/tabitha-sdk/guide/chapters/tables/</guid>
+      <description>As the creator of Tabitha, I can tell you that Tabitha&amp;rsquo;s development stemmed from a smaller project, Tabular-C++. At my heart, I am a C proggrammer, but was frustrated that there was no easy way to implent column-based data tables in C. I created this toolset to generate such code as C++ classes, but it all ultimately felt a little clunky (though the toolset works fairly well).
+I was thus inspired to create Tabitha, which would have a type system allowing for the quick creation of such tables.</description>
+    </item>
+    
+    <item>
+      <title>Vectors</title>
+      <link>https://deltaboybz.github.io/tabitha-sdk/guide/chapters/vectors/</link>
+      <pubDate>Thu, 08 Dec 2022 14:35:33 +0000</pubDate>
+      
+      <guid>https://deltaboybz.github.io/tabitha-sdk/guide/chapters/vectors/</guid>
+      <description>Declaring a Vector A vector is declared just like any other variable. For example,
+Vec[Int, 10] x stacked Vec[Int, 10] y heaped Vec[Int, 10] z will each declare vectors of integers 10 elements long. The vector itself is formally a ponter as far as the compiler is concerned. This pointer we refer to as the handle to the vector, leading us to the location in memory where the elements are stored.</description>
+    </item>
+    
+    <item>
+      <title>Addresses</title>
+      <link>https://deltaboybz.github.io/tabitha-sdk/guide/chapters/addresses/</link>
+      <pubDate>Wed, 07 Dec 2022 20:53:00 +0000</pubDate>
+      
+      <guid>https://deltaboybz.github.io/tabitha-sdk/guide/chapters/addresses/</guid>
+      <description>In Tabitha, an address is what a C programmer might call a pointers. It is a value which identifies a location in memory where data is stored. Addresses are very useful for developing performant applications.
+Declaring an Address Since they have their own types, addresses can be declared just like any other variables.
+Addr[Int] x stacked Addr[Int] y heaped Addr[Int] z The type Addr[Int] is one which belongs to variables representing the memory address of some integer.</description>
+    </item>
+    
+    <item>
+      <title>Functions</title>
+      <link>https://deltaboybz.github.io/tabitha-sdk/guide/chapters/functions/</link>
+      <pubDate>Wed, 07 Dec 2022 20:28:56 +0000</pubDate>
+      
+      <guid>https://deltaboybz.github.io/tabitha-sdk/guide/chapters/functions/</guid>
+      <description>Functions are the bread and butter of most languages. Tabitha implements functions in the sense of a procedural language (e.g C). They have a privileged existence, and are very distinct from data. Functions can take arguments and return values, though are freee to do niether of these things if they so choose.
+Tabitha Functions A Tabitha function is simply a function defined wholly within Tabitha source code. Here is an example:</description>
+    </item>
+    
+    <item>
+      <title>Declarations</title>
+      <link>https://deltaboybz.github.io/tabitha-sdk/guide/chapters/declarations/</link>
+      <pubDate>Wed, 07 Dec 2022 20:03:53 +0000</pubDate>
+      
+      <guid>https://deltaboybz.github.io/tabitha-sdk/guide/chapters/declarations/</guid>
+      <description>A variable declaration is a statement which describes a varaible to be used in some scope. In Tabitha, there are three main kinds of variable declaration:
+Stacked variable declaraton Heaped variable declaration Context/Dump varaible declaration The main difference between each type of declaration is scope. Stacked variables should only be used within the current block. Heaped variable can be use by any part of the code which has the address of the variable.</description>
+    </item>
+    
+  </channel>
+</rss>

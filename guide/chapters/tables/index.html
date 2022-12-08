@@ -1,0 +1,145 @@
+<html>
+    <head><link rel="stylesheet" href="https://deltaboybz.github.io/tabitha-sdk/guide/css/global.css">
+<link rel="stylesheet" href="https://deltaboybz.github.io/tabitha-sdk/guide/css/chapter.css">
+    </head>
+    <body>
+    <div id="title-div">
+        <h1> Tabitha Programming Guide </h1>
+        <h2> Tables </h2> 
+    </div>
+    <div id="logo-div">
+        <a href="https://deltaboybz.github.io/tabitha-sdk">
+            <img id="tabi-logo" src="https://deltaboybz.github.io/tabitha-sdk/guide/svg/logo.svg ">
+        </a>
+    </div>
+    <div id="menu-div">
+        <hr class="toc"> 
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/introduction"><div class="toc"><h3 class="toc">Introduction</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/getting_started"><div class="toc"><h3 class="toc">Getting Started</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/type_system"><div class="toc"><h3 class="toc">The Type System</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/contexts"><div class="toc"><h3 class="toc">Contexts</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/declarations"><div class="toc"><h3 class="toc">Declarations</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/functions"><div class="toc"><h3 class="toc">Functions</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/addresses"><div class="toc"><h3 class="toc">Addresses</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/vectors"><div class="toc"><h3 class="toc">Vectors</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/tables"><div class="toc"><h3 class="toc">Tables</h3></div></a></li>
+        <hr class="toc">
+        
+    </div>
+    <div id="text-div">
+    <p>As the creator of Tabitha,
+I can tell you that Tabitha&rsquo;s development stemmed from a smaller project,
+<a href="https://deltaboybz.github.io/tabular-cpp">Tabular-C++</a>.
+At my heart, I am a <code>C</code> proggrammer,
+but was frustrated that there was no easy way to implent column-based  data tables in <code>C</code>.
+I created this toolset to generate such code as <code>C++</code> classes,
+but it all ultimately felt a little clunky (though the toolset works fairly well).</p>
+<p>I was thus inspired to create Tabitha,
+which would have a type system allowing for the quick creation of such tables.
+Tabitha would also support important operations on these tables at its very core.
+So here I present to you the results of this effort.
+I must admit that other language features have received more attention at this point,
+however this still stands as one of the solid reasons I think people could benefit from using Tabitha.</p>
+<p>After publishing the first version Tabitha,
+I went back to the problem of implementing table in <code>C++</code>,
+and created <a href="https://deltaboybz.github.io/dop-c">DOP-C</a>.
+If Tabtiha&rsquo;s tables do not satisfy you,
+then feel free to try this solution instead.</p>
+<h2 id="declaring-a-table">Declaring a Table</h2>
+<p>Tables are declared like any  other variable,
+through use of the <code>Table</code> functor.</p>
+<pre><code>Table[Int a, Float b, 10] x
+stacked Table[Int a,  Float  b, 10] y
+heaped Table[Int a, Float b, 10] z
+</code></pre>
+<p>All of these statements will create tables with two fields (that is, columns),
+and <code>10</code> rows.</p>
+<p>Unklikes the case with vectors, there is no such thing as a fuzzy table;
+we must always know the size of y our table.
+Table rows have associated with them a hidden flag which indicates to Tabitha&rsquo;s core libraries
+whether or now that row is being used.
+When na table is first declared,
+all rows are marked as unused.</p>
+<h2 id="inserting-rows">Inserting Rows</h2>
+<p>Before using the table in  any  other way,
+we must insert some rows.
+We do this with a special statement.</p>
+<pre><code>Table[Int a, Float b, 10] x
+Int id
+insert (10, 3.14) into x &gt; id 
+</code></pre>
+<p>The <code>insert</code> statement should be read as follows:</p>
+<p><em>Insert the row with ordered elements (10, 3.14) into table</em> <code>x</code>
+<em>, and store the corresponding row&rsquo;s ID into the variable</em> <code>id</code>.</p>
+<p>If we sih the deal s pecifically with this data in the future,
+then we must retain this <code>id</code>.
+The ID is distinct from the row&rsquo;s index
+(which tells us about where the elements are in memory).
+The table  will  not changge if there are no unused rows in the table.</p>
+<h2 id="deleting-rows">Deleting Rows</h2>
+<p>Deleting a row effectively marks that row as being unused
+(and hence we may insert into it).
+For example,</p>
+<pre><code>delete row 3 from x
+</code></pre>
+<p>would delete the row with ID <code>3</code> from table <code>x</code>.</p>
+<h2 id="referencing-individual-elements">Referencing Individual Elements</h2>
+<p>We may reference individual elements with the syntax <code>table.field&lt;id&gt;</code>.
+For example,</p>
+<pre><code>x.b&lt;id&gt; = 2.718
+</code></pre>
+<p>will assign <code>2.718</code> to the element in field <code>b</code> of <code>x</code> corresponding to the row with ID <code>id</code>.</p>
+<h2 id="measuring-a-table">Measuring a Table</h2>
+<p>Despite having a fixed number of rows, a table will usually have some rows which remain unused.
+To gget the number of rows actually being used, we can use a <code>measure</code> statement.</p>
+<pre><code>measure x &gt; n  
+</code></pre>
+<p>This stores the number of rows used in table <code>x</code> in the integer variable <code>n</code>.
+Note that the <code>n</code> must have been declared before this statement.</p>
+<h2 id="crunching-a-table">Crunching a Table</h2>
+<p>In principle, the used rows of a table could be anywhere.
+A table migght have two consequetive used rows,
+then an unsed row, then a bunch more used rows.
+For operations such as iterating over rows, this is not ideal.
+Therefore we have the <code>crunch</code> statement.</p>
+<pre><code>crunch x &gt; id
+</code></pre>
+<p>A <code>crunch</code> statement pushed all used rows to the top of the table.
+The <code>&gt; id</code> is optional, storing the ID of the topmost row in the integger variable <code>id</code>.
+Again, <code>id</code>  must have been declared beforehand.</p>
+<h2 id="treating-fields-as-vectors">Treating Fields as Vectors</h2>
+<p>There are situations where it is conveneint to perfform some operation on successive members of a table&rsquo;s field.
+Since Tabitha&rsquo;s syntax has it so that table elements are referenced by ID,
+it is suseful to memorise the following pattern for when these situations arise.</p>
+<pre><code>Table[Int a, Float b, 10] table
+# ...
+# do whatever with the table
+# ...
+Vec[Float, _] b_vec
+Int top
+crunch table &gt; top 
+label table.b&lt;top&gt;? as b_vec
+</code></pre>
+<p>We can now refer to elements within the field <code>table.b</code> as we would elements of a vector,
+with the indices representin actual row numbers as opposed to IDs.</p>
+
+    </div>
+    </body>
+</html>

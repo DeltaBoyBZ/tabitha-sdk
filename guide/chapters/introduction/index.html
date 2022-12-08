@@ -1,0 +1,85 @@
+<html>
+    <head><link rel="stylesheet" href="https://deltaboybz.github.io/tabitha-sdk/guide/css/global.css">
+<link rel="stylesheet" href="https://deltaboybz.github.io/tabitha-sdk/guide/css/chapter.css">
+    </head>
+    <body>
+    <div id="title-div">
+        <h1> Tabitha Programming Guide </h1>
+        <h2> Introduction </h2> 
+    </div>
+    <div id="logo-div">
+        <a href="https://deltaboybz.github.io/tabitha-sdk">
+            <img id="tabi-logo" src="https://deltaboybz.github.io/tabitha-sdk/guide/svg/logo.svg ">
+        </a>
+    </div>
+    <div id="menu-div">
+        <hr class="toc"> 
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/introduction"><div class="toc"><h3 class="toc">Introduction</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/getting_started"><div class="toc"><h3 class="toc">Getting Started</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/type_system"><div class="toc"><h3 class="toc">The Type System</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/contexts"><div class="toc"><h3 class="toc">Contexts</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/declarations"><div class="toc"><h3 class="toc">Declarations</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/functions"><div class="toc"><h3 class="toc">Functions</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/addresses"><div class="toc"><h3 class="toc">Addresses</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/vectors"><div class="toc"><h3 class="toc">Vectors</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/tables"><div class="toc"><h3 class="toc">Tables</h3></div></a></li>
+        <hr class="toc">
+        
+    </div>
+    <div id="text-div">
+    <h2 id="what-is-tabitha">What is Tabitha?</h2>
+<p>Tabitha is a new programming language designed by me, Matthew Smith.
+It is a procedural language, which takes a novel approach to global data.
+Iit also has an elegant type system, which allows for a rich variety of data-types.</p>
+<h2 id="why-is-tabitha">Why is Tabitha?</h2>
+<p>Tabitha was created as a showcase of my vision for the design of larger applications.
+When creating large applications in <code>C</code> or <code>C++</code>,
+there are some difficulties in managing a large amount of data used by many functions.
+The usual solution in <code>C</code>, is to create types representing a context of some kind.
+These objects are passed around so that many functions can  modify the data therein.
+In <code>C++</code>, data is encapsulated in classes,
+and advised programming practices lead developers to place the functions
+which modify said data in that same class.
+This is knokwn as the object-oriented approach.</p>
+<p>There is an  issue with this.
+As well as leading to a lot of boilerplate code,
+software written like this tend to be unstable to refactoring.
+When functions require access to more data,
+we have to either merge classes or split the function into multiple functions
+and place these into appropriate classes.
+There are some  other issue with object-orientation,
+but I choose not to get into that here.</p>
+<p>Tabitha proposes to keep things simple,
+while still allowing some association of data with functions.
+It does this by flipping the relationship on its head;
+functions do not belong to classes, but rather functions capture collections of data.
+Tabitha calls these data collections <em>contexts</em>,
+and so we can phrase this as Tabitha functions <em>capturing</em>  contexts.</p>
+<h2 id="who-is-tabitha">Who is Tabitha?</h2>
+<p>Tabitha is our mascot.
+She absolutely loves <code>C</code>,
+but is frustrated by some of the problems coming with her large projects.</p>
+<figure class="fig"><img src="img/tabitha.png" height="300px;"/>
+</figure>
+
+
+    </div>
+    </body>
+</html>

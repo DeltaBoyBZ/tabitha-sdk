@@ -1,0 +1,148 @@
+<html>
+    <head><link rel="stylesheet" href="https://deltaboybz.github.io/tabitha-sdk/guide/css/global.css">
+<link rel="stylesheet" href="https://deltaboybz.github.io/tabitha-sdk/guide/css/chapter.css">
+    </head>
+    <body>
+    <div id="title-div">
+        <h1> Tabitha Programming Guide </h1>
+        <h2> Declarations </h2> 
+    </div>
+    <div id="logo-div">
+        <a href="https://deltaboybz.github.io/tabitha-sdk">
+            <img id="tabi-logo" src="https://deltaboybz.github.io/tabitha-sdk/guide/svg/logo.svg ">
+        </a>
+    </div>
+    <div id="menu-div">
+        <hr class="toc"> 
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/introduction"><div class="toc"><h3 class="toc">Introduction</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/getting_started"><div class="toc"><h3 class="toc">Getting Started</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/type_system"><div class="toc"><h3 class="toc">The Type System</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/contexts"><div class="toc"><h3 class="toc">Contexts</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/declarations"><div class="toc"><h3 class="toc">Declarations</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/functions"><div class="toc"><h3 class="toc">Functions</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/addresses"><div class="toc"><h3 class="toc">Addresses</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/vectors"><div class="toc"><h3 class="toc">Vectors</h3></div></a></li>
+        <hr class="toc">
+        
+        <a class="toc" href="/tabitha-sdk/guide/chapters/tables"><div class="toc"><h3 class="toc">Tables</h3></div></a></li>
+        <hr class="toc">
+        
+    </div>
+    <div id="text-div">
+    <p>A variable declaration is a statement which describes a varaible to be used in some scope.
+In Tabitha, there are three main kinds of variable declaration:</p>
+<ul>
+<li>Stacked variable declaraton</li>
+<li>Heaped variable declaration</li>
+<li>Context/Dump varaible declaration</li>
+</ul>
+<p>The  main difference between each type of declaration is scope.
+Stacked variables should only be used within the current <em>block</em>.
+Heaped variable  can be use by any part of the code which has the address of the variable.
+Context varaibles should only  be used within functions which have captured the relevant contexts.</p>
+<h2 id="stacked-declaration">Stacked Declaration</h2>
+<p>The most straight-forward kind of varaible declaration in Tabitha is the <strong>stacked variable declaration</strong>.</p>
+<pre><code>function foo {
+    Int x                   # this is a stacked variable declaration 
+    stacked Float y = 3.14  # this is also a stacked variable declaration
+}
+</code></pre>
+<p>To declare a stacked variable, we need to be inside a function.
+By default, all variables declared inside a function are stacked,
+but we can choose to be explicit and use he <code>stacked</code> keyword.
+It is optional whether or not we specify an initial value for the variable.
+The <strong>stack</strong>  is a piece  of memory gien to your program by the operating system,<br>
+and is essential a linear space in memory.
+The stack can be <em>pushed</em> to or <em>popped</em> from.
+The stack is reset upon return from a function,
+hence the restriction that stacked variables shuld really only be used within the block in which they are declared
+(or any children of that block).</p>
+<h2 id="heaped-declaration">Heaped Declaration</h2>
+<p>Heaped declarations  also take place within functions,
+but there is a difference in the syntax.</p>
+<pre><code>function foo {
+    heaped Int x    = 10    # this is a heaped variable declaration
+    heaped Float y  = 3.14  # this is also a heaped varialbe declaration
+}
+</code></pre>
+<p>A heaped variable can be used <em>by name</em> within the block in which it is declared.
+They can also  be used however by any part of the code which has the variable&rsquo;s address.
+Here is an example:</p>
+<pre><code>attach external std
+
+function foo {
+    Addr[Int] x = bar()
+    std::printIntLn(@x)
+}
+
+function bar -&gt; Addr[Int] {
+    heaped Int x = 10
+    return x? 
+}
+</code></pre>
+<p>The result of compiling and running this program would be that <code>10</code> is printed to the console.
+This example is <strong>not</strong> guaranteed to work if we had made <code>x</code> a <code>stacked</code>  varaible in <code>bar</code>.
+The reason for this, is that heaped variables are allocated on the memory <strong>heap</strong>.
+This is a large chuck of memory provided to t he program by the operating system.
+It is less organised than the stack,
+and is not affected by a function returning.
+Data allocated on the heap persists until it is explicitly deallocated.
+Therefore, so long as we have the memory address, we can access and modify the data.</p>
+<p>Memory can be deallocated (or freed) by an <code>unheap</code>  statement.
+Since many complex datatypes can find themselves <em>heaped</em>,
+the unheap statement takes an optinal argument describing the type of data which is to be deallocated.
+If this argument is not provided, the type is inferred.</p>
+<pre><code>heaped Int x
+unheap x? # implicitly unheaps the data at x? as an Int
+
+heaped Vec[Int, 10] x
+unheap x? # implicitly unheaps the data at x? as a Vec[Int, 10]
+
+heaped Vec[Vec[Int, 10], 10] x
+unheap x? as Vec[Addr[Int], 10] # deallocates the top-level vector
+                                # but not any of its elements
+</code></pre>
+<p>So we see that unheap statements take an address to some heaped data,
+and the type of that heaped data.
+We have to use addresses here,
+for the name of variable may no longer be in scope.</p>
+<h2 id="contextdump-declaration">Context/Dump Declaration</h2>
+<p>Although the usage of these variable differ from each other,
+the mechanics of declaring context variables and dump variables are very similar.
+Declaraing a variable inside a context or a dump is very smple.</p>
+<pre><code>context Data {
+    Int x
+    Float y
+    std::String msg = &quot;hello&quot;
+    Vec[Int, 10] scores
+}
+
+dump Const {
+    Float pi = 3.14 
+}
+</code></pre>
+<p>Context and dump variables primiarily reside in the data section of the program&rsquo;s binary.
+That means that the variables are effectively a part of the program itself,
+and are not just created by the code during runtime.
+The exception to this, is what happens with vectors and tables.
+The elements of these are actually stored on the heap,
+but the handls are in the data section.</p>
+
+    </div>
+    </body>
+</html>
